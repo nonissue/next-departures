@@ -6,7 +6,9 @@
     "outDir": "./dist",
     "esModuleInterop": true,
     "noImplicitAny": true,
-    "forceConsistentCasingInFileNames": true,
     "strict": true,
-  }
+  },
+  "include": [
+    "src/**/*",
+  ]
 }
