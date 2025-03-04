@@ -1,0 +1,14 @@
+{
+    "agencies": [
+        {
+            "url": "https://gtfs.edmonton.ca/TMGTFSRealTimeWebService/GTFS/GTFS.zip"
+        }
+    ],
+    "csvOptions": {
+        "skip_lines_with_error": true
+    },
+    "downloadTimeout": 5000,
+    "ignoreDuplicates": true,
+    "ignoreErrors": false,
+    "sqlitePath": "/Users/apw/code/node-gtfs-pg/db/gtfs"
+}
