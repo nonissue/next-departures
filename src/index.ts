@@ -1,17 +1,23 @@
-import { closeDb, getStops } from 'gtfs';
+import { closeDb, getStops, getStoptimes } from 'gtfs';
 import fetchConfig from './fetchConfig.js';
 import initDb from './setupDb.js';
 
 const main = async () => {
-  //   console.log(await fetchConfig());
   const db = await initDb();
 
-  console.log(db);
-  const stops = getStops({
-    stop_id: ['2113', '2114'],
-  });
+  const stoptimes = getStoptimes(
+    {
+      stop_id: '1891', // Corona Southbound
+      date: 20250303,
+      start_time: '21:42:00',
+      end_time: '22:42:00',
+    },
+    [],
+    [['departure_time', 'ASC']],
+  );
 
-  console.log(stops);
+  console.log(stoptimes);
+
   closeDb(db);
 };
 
