@@ -1,4 +1,4 @@
-# `node-gtfs` Playground
+# next-departures
 
 Playing around with [node-gtfs](https://github.com/BlinkTagInc/node-gtfs).
 Have borrowed some code from there as well!
