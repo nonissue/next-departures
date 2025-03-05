@@ -1,5 +1,5 @@
 {
-  "name": "node-gtfs-pg",
+  "name": "next-departures",
   "author": "Andy andy@nonissue.org",
   "type": "module",
   "main": "./dist/index.js",
