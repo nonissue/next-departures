@@ -1,9 +1,12 @@
 import { closeDb, getStoptimes } from 'gtfs';
-import initDb from './setupDb.js';
-import getCurrentDate from './getCurrentDate.js';
+import { loadDb } from './db.js';
+import getCurrentDate from './lib/getCurrentDate.js';
+import { getConfig } from './utils.js';
 
 const main = async () => {
-  const db = await initDb();
+  const config = await getConfig();
+
+  const db = await loadDb(config);
 
   const stoptimesSouth = await getStoptimes(
     {

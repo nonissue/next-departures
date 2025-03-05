@@ -1,7 +1,7 @@
-import { openDb } from 'gtfs';
+import { closeDb, getAgencies, getStops, openDb } from 'gtfs';
 import { getConfig } from './utils.js';
 import test from 'node:test';
-import { importGtfsDataToDb } from './db.js';
+import { importGtfsDataToDb, loadDb } from './db.js';
 import { Config } from './types/global.js';
 
 const previewConfig = async () => {
@@ -25,9 +25,47 @@ const testOpeningDb = async () => {
 };
 
 const runner = async () => {
-  //   await testOpeningDb();
-  const config: Config = await getConfig();
-  await importGtfsDataToDb(config);
+  const runImport = async () => {
+    const config: Config = await getConfig();
+    await importGtfsDataToDb(config);
+  };
+
+  const runLoadDb = async () => {
+    console.log('LoadingDB!');
+    const config: Config = await getConfig();
+
+    const db = await loadDb(config);
+
+    console.log(db);
+    console.log(getAgencies());
+    console.log(`Agency Count: ${getAgencies().length}`);
+
+    closeDb(db);
+  };
+
+  const openRunClose = async (funcToRun: Function) => {
+    console.log('openRunClose');
+
+    const config: Config = await getConfig();
+
+    const db = await loadDb(config);
+    console.log('Db loaded');
+
+    funcToRun();
+
+    closeDb(db);
+  };
+
+  const testFunc = () => {
+    const stops = getStops({
+      stop_id: ['1891', '2114'],
+    });
+
+    console.log(stops);
+  };
+
+  //   await runLoadDb();
+  await openRunClose(testFunc);
 };
 
 runner();

@@ -13,6 +13,10 @@ export const loadDb = async (config: Config) => {
     );
   }
 
+  if (!config.agencies.length) {
+    throw new Error('No agency defined in `config.json`');
+  }
+
   let db;
 
   try {
@@ -29,7 +33,6 @@ export const loadDb = async (config: Config) => {
 export const importGtfsDataToDb = async (config: Config) => {
   console.log('config from importGtfsToDb');
   console.log(config);
-  return;
 
   console.time('GTFS Import Duration'); // Start the timer
 
@@ -41,9 +44,9 @@ export const importGtfsDataToDb = async (config: Config) => {
     throw new Error(error);
   }
 
-  console.log(
-    `Starting GTFS import for ${config.agencies.length} agency(s) using SQLite database at ${config.sqlitePath}`,
-  );
+  // console.log(
+  //   `Starting GTFS import for ${config.agencies.length} agency(s) using SQLite database at ${config.sqlitePath}`,
+  // );
 
   try {
     await importGtfs({ agencies: config.agencies, db: db });
@@ -53,37 +56,3 @@ export const importGtfsDataToDb = async (config: Config) => {
 
   console.timeEnd('GTFS Import Duration'); // End the timer and log duration
 };
-
-export const dbTest = async () => {
-  const config = await getConfig();
-  const agencyCount = config.agencies.length;
-
-  validateConfigForImport(config);
-};
-
-const main = async () => {
-  //   await populateDb();
-  const config = await getConfig();
-  let gtfsDb;
-  try {
-    gtfsDb = await loadDb(config);
-  } catch (error: any) {
-    throw new Error(error);
-  }
-
-  console.log(gtfsDb);
-
-  closeDb(gtfsDb);
-};
-
-// main();
-
-const scratch = async () => {
-  const config = await getConfig();
-
-  console.log(config);
-
-  importGtfsDataToDb(config);
-};
-
-// scratch();
