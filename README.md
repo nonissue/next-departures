@@ -1,6 +1,7 @@
 # `node-gtfs` Playground
 
-Playing around with `node-gtfs`.
+Playing around with [node-gtfs](https://github.com/BlinkTagInc/node-gtfs).
+Have borrowed some code from there as well!
 
 ## Setup notes
 

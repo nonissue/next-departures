@@ -1,8 +1,8 @@
 import { importGtfs, openDb } from 'gtfs';
-import fetchConfig from './fetchConfig.js';
+import { getConfig } from './getConfig.js';
 
 const initDb = async () => {
-  const config = await fetchConfig();
+  const config = await getConfig();
   let db;
   try {
     db = openDb(config);

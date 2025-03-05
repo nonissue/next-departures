@@ -1,10 +1,17 @@
 import { closeDb, importGtfs, openDb } from 'gtfs';
-import fetchConfig from './fetchConfig.js';
+import { validateConfigForImport } from './utils.js';
+import { getConfig } from './utils.js';
+import { Config } from './types/global.js';
 
-const getDb = async () => {
-  const config = await fetchConfig();
+export const loadDb = async (config: Config) => {
+  // const config = await fetchConfig();
+  // validateConfigForImport(config);
 
-  // log(config)();
+  if (!config.sqlitePath) {
+    throw new Error(
+      `To load and connect to an existing database, config.json must contain a valid \`sqlitePath\``,
+    );
+  }
 
   let db;
 
@@ -19,24 +26,23 @@ const getDb = async () => {
   return db;
 };
 
-const populateDb = async () => {
-  const config = await fetchConfig();
-  const agencyCount = config.agencies.length;
+export const importGtfsDataToDb = async (config: Config) => {
+  console.log('config from importGtfsToDb');
+  console.log(config);
+  return;
 
-  console.log(
-    `Starting GTFS import for ${agencyCount} using SQLite database at ${config.sqlitePath}`,
-  );
+  console.time('GTFS Import Duration'); // Start the timer
 
   let db;
 
   try {
-    db = await getDb();
+    db = await loadDb(config);
   } catch (error: any) {
     throw new Error(error);
   }
 
   console.log(
-    `Starting GTFS import for ${agencyCount} using SQLite database at ${config.sqlitePath}`,
+    `Starting GTFS import for ${config.agencies.length} agency(s) using SQLite database at ${config.sqlitePath}`,
   );
 
   try {
@@ -44,15 +50,40 @@ const populateDb = async () => {
   } catch (error) {
     console.error(error);
   }
+
+  console.timeEnd('GTFS Import Duration'); // End the timer and log duration
+};
+
+export const dbTest = async () => {
+  const config = await getConfig();
+  const agencyCount = config.agencies.length;
+
+  validateConfigForImport(config);
 };
 
 const main = async () => {
   //   await populateDb();
-  const gtfsDb = await getDb();
+  const config = await getConfig();
+  let gtfsDb;
+  try {
+    gtfsDb = await loadDb(config);
+  } catch (error: any) {
+    throw new Error(error);
+  }
 
   console.log(gtfsDb);
 
   closeDb(gtfsDb);
 };
 
-main();
+// main();
+
+const scratch = async () => {
+  const config = await getConfig();
+
+  console.log(config);
+
+  importGtfsDataToDb(config);
+};
+
+// scratch();
