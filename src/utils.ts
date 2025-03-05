@@ -38,4 +38,18 @@ export const getConfig = async () => {
   }
 };
 
+/**
+ * Ensures time components have leading zeros (e.g., "9:5:1" -> "09:05:01")
+ * @param time Time string in HH:mm:ss format
+ * @returns Formatted time string with leading zeros, or null if invalid format
+ */
+export function padLeadingZeros(time: string) {
+  const split = time.split(':').map((d) => String(Number(d)).padStart(2, '0'));
+  if (split.length !== 3) {
+    return null;
+  }
+
+  return split.join(':');
+}
+
 const downloadAndImportGtfs = () => {};
