@@ -1,6 +1,6 @@
 import { closeDb, getStoptimes } from 'gtfs';
 import { loadDb } from './db.js';
-import getCurrentDate from './lib/getCurrentDate.js';
+import { getCurrentDate } from './lib/time-utils.js';
 import { getConfig } from './utils.js';
 
 const main = async () => {

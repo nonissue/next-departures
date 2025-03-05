@@ -1,5 +1,5 @@
 import { it, describe, beforeEach, afterEach, expect, vi } from 'vitest';
-import getCurrentDate from './getCurrentDate.js';
+import { getCurrentDate } from './time-utils.js';
 
 describe('get current date YYYYMMDD', () => {
   beforeEach(() => {

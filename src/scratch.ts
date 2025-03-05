@@ -1,8 +1,9 @@
-import { closeDb, getAgencies, getStops, openDb } from 'gtfs';
+import { closeDb, getAgencies, getStops, getStoptimes, openDb } from 'gtfs';
 import { getConfig } from './utils.js';
 import test from 'node:test';
 import { importGtfsDataToDb, loadDb } from './db.js';
 import { Config } from './types/global.js';
+import { getCurrentDate, getCurrentTime } from './lib/time-utils.js';
 
 const previewConfig = async () => {
   const config = await getConfig();
@@ -57,15 +58,34 @@ const runner = async () => {
   };
 
   const testFunc = () => {
-    const stops = getStops({
-      stop_id: ['1891', '2114'],
-    });
+    const stopTimesNorth = getStoptimes(
+      {
+        stop_id: '1891', // Corona Southbound
+        date: getCurrentDate(),
+        start_time: '21:42:00',
+        end_time: '22:42:00',
+      },
+      ['trip_id', 'stop_headsign', 'departure_time'],
+      [['departure_time', 'ASC']],
+    );
 
-    console.log(stops);
+    const stoptimesSouth = getStoptimes(
+      {
+        stop_id: '2114', // Southgate Northbound
+        date: getCurrentDate(),
+        start_time: '21:42:00',
+        end_time: '22:42:00',
+      },
+      ['trip_id', 'stop_headsign', 'departure_time'],
+      [['departure_time', 'ASC']],
+    );
+
+    console.log(stoptimesSouth);
   };
 
   //   await runLoadDb();
-  await openRunClose(testFunc);
+  //   await openRunClose(testFunc);
+  console.log(getCurrentTime());
 };
 
 runner();
