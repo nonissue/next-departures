@@ -79,4 +79,10 @@ describe('time-utils', () => {
 
     expect(eightAmInSecondsFromMidnight).toBe(28800);
   });
+  it('calculateSecondsFromMidnight correctly converts HH:MM:SS timestamp into seconds since midnight', () => {
+    const eightAm = '0800:00';
+    const eightAmInSecondsFromMidnight = calculateSecondsFromMidnight(eightAm);
+
+    expect(eightAmInSecondsFromMidnight).toBe(null);
+  });
 });

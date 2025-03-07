@@ -6,13 +6,13 @@ const HOURS_IN_A_DAY = 24;
 
 export const getCurrentDate = () => {
   // const currentDate = new Date()
-  const currentDate = new Date().toLocaleDateString('eo', {});
+  const currentDate = new Date();
 
-  // const formattedDate =
-  //   currentDate.getFullYear() * 10000 +
-  //   (currentDate.getMonth() + 1) * 100 +
-  //   currentDate.getDate();
-  return currentDate;
+  const formattedDate =
+    currentDate.getFullYear() * 10000 +
+    (currentDate.getMonth() + 1) * 100 +
+    currentDate.getDate();
+  return formattedDate;
 };
 
 export const getCurrentServiceDate = () => {
@@ -80,10 +80,9 @@ export function calculateSecondsFromMidnight(time: string): number | null {
   // }
 
   const [hours, minutes, seconds] = time.split(':').map(Number);
-  // TODO: Can be removed since we're using typescript?
-  // if ([hours, minutes, seconds].some(isNaN) || minutes >= 60 || seconds >= 60) {
-  //   return null;
-  // }
+  if ([hours, minutes, seconds].some(isNaN) || minutes >= 60 || seconds >= 60) {
+    return null;
+  }
 
   return hours * 3600 + minutes * 60 + seconds;
 }
