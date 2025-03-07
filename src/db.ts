@@ -1,11 +1,11 @@
-import { closeDb, importGtfs, openDb } from 'gtfs';
+import { importGtfs, openDb } from 'gtfs';
 import { validateConfigForImport } from './utils.js';
 import { getConfig } from './utils.js';
 import { Config } from './types/global.js';
 
 export const loadDb = async (config: Config) => {
   // const config = await fetchConfig();
-  // validateConfigForImport(config);
+  validateConfigForImport(config);
 
   if (!config.sqlitePath) {
     throw new Error(
@@ -25,6 +25,7 @@ export const loadDb = async (config: Config) => {
     console.error(
       `Unable to open sqlite database "${config.sqlitePath}" defined as \`sqlitePath\` config.json. Ensure the parent directory exists and import GTFS before running this app.`,
     );
+    throw new Error('Error opening database');
   }
 
   return db;
