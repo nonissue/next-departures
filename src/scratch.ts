@@ -155,9 +155,10 @@ const runner = async () => {
 
   const db = await loadDb(config);
   await getDeparturesForStop('1926');
+
   // await getStopName('1926');
   // await advancedQueryStoptimesStops();
-  // closeDb(db);
+  closeDb(db);
   // await openRunClose(testFunc);
 };
 runner();

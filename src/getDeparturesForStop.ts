@@ -1,23 +1,10 @@
-import { closeDb, getStops, getStoptimes } from 'gtfs';
-import { loadDb } from './db.js';
-import { Config } from './types/global.js';
-import { getConfig } from './utils.js';
+import { getStops, getStoptimes } from 'gtfs';
+
 import {
   convertServiceTimeToClockTime,
   getCurrentServiceDate,
   getCurrentServiceTime,
-  getStartAndStopTimeFormatted,
 } from './lib/time-utils.js';
-
-const openRunClose = async (funcToRun: Function) => {
-  const config: Config = await getConfig();
-
-  const db = await loadDb(config);
-
-  funcToRun();
-
-  closeDb(db);
-};
 
 /**
  * Validates the configuration object for GTFS import
@@ -32,14 +19,11 @@ export const getDeparturesForStop = (
   const currentServiceTime = getCurrentServiceTime();
   const currentServiceDate = getCurrentServiceDate();
 
-  // console.log(currentServiceDate);
-  // console.log(currentServiceTime);
-
   let departures;
 
   departures = getStoptimes(
     {
-      stop_id: stopId, // Corona Southbound
+      stop_id: stopId,
       date: currentServiceDate,
       start_time: currentServiceTime,
     },
@@ -47,9 +31,12 @@ export const getDeparturesForStop = (
     [['departure_time', 'ASC']],
   );
 
+  // retrieve human readable stopname for specified stop
+  // this maybe shouldn't go here
   const [stopName] = getStops({ stop_id: stopId });
-  // console.log(stopName);
 
+  // move below to dedicated print/display function?
+  // formatting and printing output is beyond the original scope
   console.log(
     `\n${stopName.stop_name}\t(ID: ${stopId})\nServiceTime:\t\t${currentServiceTime}\nServiceDate:\t\t${currentServiceDate}\n\n${'DepartureTime'.padEnd(20)} ${'Direction'?.padStart(25)} ${'Trip ID'?.padStart(15)}\n\n--------------------------------------------------------------`,
   );
