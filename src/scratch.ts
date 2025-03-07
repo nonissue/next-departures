@@ -1,11 +1,4 @@
-import {
-  closeDb,
-  getAgencies,
-  getStops,
-  getStoptimes,
-  openDb,
-  advancedQuery,
-} from 'gtfs';
+import { closeDb, getStoptimes, openDb, advancedQuery } from 'gtfs';
 import { getConfig } from './utils.js';
 import { loadDb } from './db.js';
 import { Config } from './types/global.js';
@@ -13,10 +6,8 @@ import {
   convertServiceTimeToClockTime,
   getCurrentServiceDate,
   getCurrentServiceTime,
-  getStartAndStopTimeFormatted,
 } from './lib/time-utils.js';
 import { getDeparturesForStop } from './getDeparturesForStop.js';
-import { getStopName } from './getStopName.js';
 
 const previewConfig = async () => {
   const config = await getConfig();
@@ -53,10 +44,6 @@ const testFunc = async () => {
   const currentServiceTime = getCurrentServiceTime();
   const currentServiceDate = getCurrentServiceDate();
 
-  const formattedTimes = getStartAndStopTimeFormatted(
-    tripLookaheadIntervalMins,
-  );
-
   console.log(currentServiceDate);
   console.log(currentServiceTime);
 
@@ -85,8 +72,7 @@ const testFunc = async () => {
     {
       stop_id: '2114', // Southgate Northbound
       date: currentServiceDate,
-      start_time: formattedTimes.start,
-      end_time: formattedTimes.end,
+      start_time: currentServiceTime,
     },
     ['trip_id', 'stop_headsign', 'departure_time'],
     [['departure_time', 'ASC']],
@@ -154,11 +140,12 @@ const runner = async () => {
   const config: Config = await getConfig();
 
   const db = await loadDb(config);
+
   await getDeparturesForStop('1926');
 
   // await getStopName('1926');
   // await advancedQueryStoptimesStops();
-  closeDb(db);
+  await closeDb(db);
   // await openRunClose(testFunc);
 };
 runner();

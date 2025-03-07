@@ -1,13 +1,18 @@
-import { format } from 'path';
 import { padLeadingZeros } from '../utils.js';
 
+const SERVICE_DAY_END_HOUR = 5;
+const LAST_CLOCK_HOUR = 23;
+const HOURS_IN_A_DAY = 24;
+
 export const getCurrentDate = () => {
-  const currentDate = new Date();
-  const formattedDate =
-    currentDate.getFullYear() * 10000 +
-    (currentDate.getMonth() + 1) * 100 +
-    currentDate.getDate();
-  return formattedDate;
+  // const currentDate = new Date()
+  const currentDate = new Date().toLocaleDateString('eo', {});
+
+  // const formattedDate =
+  //   currentDate.getFullYear() * 10000 +
+  //   (currentDate.getMonth() + 1) * 100 +
+  //   currentDate.getDate();
+  return currentDate;
 };
 
 export const getCurrentServiceDate = () => {
@@ -18,7 +23,7 @@ export const getCurrentServiceDate = () => {
 
   const [hours, minutes, seconds] = currentTime.split(':').map(Number);
 
-  if (hours < 5) {
+  if (hours < SERVICE_DAY_END_HOUR) {
     return (
       currentDate.getFullYear() * 10000 +
       (currentDate.getMonth() + 1) * 100 +
@@ -32,25 +37,6 @@ export const getCurrentServiceDate = () => {
       currentDate.getDate()
     );
   }
-};
-
-export const getYesterdaysDate = () => {
-  const currentDate = new Date();
-  const formattedDate =
-    currentDate.getFullYear() * 10000 +
-    (currentDate.getMonth() + 1) * 100 +
-    currentDate.getDate() -
-    1;
-  return formattedDate;
-};
-
-export const getCurrentTime = () => {
-  const currentTime = new Date();
-  const currentTimeFormatted = currentTime.toLocaleTimeString('eo', {
-    hour12: false,
-  });
-
-  return currentTimeFormatted;
 };
 
 /**
@@ -68,66 +54,36 @@ export const getCurrentServiceTime = () => {
 
   const [hours, minutes, seconds] = currentTime.split(':').map(Number);
 
-  const currentServiceTime = `${hours < 4 ? hours + 24 : hours}:${minutes}:${seconds}`;
-  // const mockedCurrentServiceTime = `${1 < 4 ? 1 + 24 : 1}:${minutes}:${seconds}`;
+  const currentServiceTime = `${hours < SERVICE_DAY_END_HOUR ? hours + HOURS_IN_A_DAY : hours}:${minutes}:${seconds}`;
+  // console.log('SERVICE TIME IS MOCKED');
+  // const mockedCurrentServiceTime = `${hours < 5 ? hours + 12 : 1}:${minutes}:${seconds}`;
 
   return padLeadingZeros(currentServiceTime);
 };
 
 export const convertServiceTimeToClockTime = (serviceTime: string) => {
   const [hours, minutes, seconds] = serviceTime.split(':').map(Number);
-  const clockTime = `${hours > 23 ? hours - 24 : hours}:${minutes}:${seconds}`;
+  const clockTime = `${hours > LAST_CLOCK_HOUR ? hours - HOURS_IN_A_DAY : hours}:${minutes}:${seconds}`;
   return padLeadingZeros(clockTime);
 };
 
 /**
- * Validates the configuration object for GTFS import
- * @param interval the interval between startTime and endTime (minutes, default = 60)
- * @throws Error if agencies are missing or if agency lacks both url and path
- * @returns an object containing formatted start and stop times
+ * Converts time string in HH:mm:ss format to seconds since midnight
+ * @param time Time string in HH:mm:ss format
+ * @returns Number of seconds since midnight, or null if invalid format
+ * taken from `node-gtfs`
  */
-export const getStartAndStopTimeFormatted = (interval: number = 60) => {
-  // const targetTime = '23:30:00'; // this could be startTime.toLocaleString etc to get current
-  const targetTime = new Date().toLocaleTimeString('eo', { hour12: false });
-  const [hours, minutes, seconds] = targetTime.split(':').map(Number);
-  const SERVICE_DAY_END_HOUR = 5;
-  const normalizedStart = `${hours < SERVICE_DAY_END_HOUR ? hours + 24 : hours}:${minutes}:${seconds}`;
-  const normalizedEnd = `${(hours < SERVICE_DAY_END_HOUR ? hours + 24 : hours) + 1}:${minutes}:${seconds}`;
-  // const tmp2 = `${hours < SERVICE_DAY_END_HOUR ? hours + 24 : hours}:${minutes}:${seconds}`;
+export function calculateSecondsFromMidnight(time: string): number | null {
+  // TODO: Can be removed since we're using typescript?
+  // if (!time || typeof time !== 'string') {
+  //   return null;
+  // }
 
-  // const startTime = new Date('23:00:00');
-  const startTime = new Date();
-  /*
-  GTFS spec says:
-  
-  if startTime hours is less than, say, 4, add 24 to it
-  eg. 00:30:00 becomes 24:30:00 
-  
+  const [hours, minutes, seconds] = time.split(':').map(Number);
+  // TODO: Can be removed since we're using typescript?
+  // if ([hours, minutes, seconds].some(isNaN) || minutes >= 60 || seconds >= 60) {
+  //   return null;
+  // }
 
-*/
-
-  const tmp = `${startTime.getHours() + 1}:${startTime.getMinutes()}:${startTime.getSeconds()}`;
-  // console.log(padLeadingZeros(tmp2));
-
-  const formattedTimes = {
-    // this needs to be modified ->
-    // if our startTime + interval occurs after midnight
-    //    eg. startTime: 23:45:00 | +60m | endTime: 00:45:00
-    // But occurs on the same *service day*, the endTime
-    //    eg. startTime: 23:45:00 | +60m | endTime: 24:45:00
-    // end: new Date(
-    //   startTime.getTime() + interval * 60 * 1000,
-    // enter the end time as a value greater than 24:00:00
-    // ).toLocaleTimeString('eo', { hour12: false }),
-    // start: startTime.toLocaleTimeString('eo', {
-    //   hour12: false,
-    // }),
-    // end: padLeadingZeros(tmp),
-    // start: targetTime,
-    // end: padLeadingZeros(tmp2),
-    start: normalizedStart,
-    end: normalizedEnd,
-  };
-
-  return formattedTimes;
-};
+  return hours * 3600 + minutes * 60 + seconds;
+}

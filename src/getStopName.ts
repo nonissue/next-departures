@@ -1,7 +1,7 @@
 import { closeDb, getStopAttributes, getStops } from 'gtfs';
 import { loadDb } from './db.js';
 
-export const getStopName = async (stopId: string) => {
+export const getStopName = (stopId: string) => {
   let stopFields;
 
   stopFields = getStops(

@@ -2,6 +2,7 @@ import { getStops, getStoptimes } from 'gtfs';
 
 import {
   convertServiceTimeToClockTime,
+  getCurrentDate,
   getCurrentServiceDate,
   getCurrentServiceTime,
 } from './lib/time-utils.js';
@@ -16,12 +17,11 @@ export const getDeparturesForStop = (
   stopId: string,
   tripLookaheadIntervalMins: number = 60,
 ) => {
+  const currentDate = getCurrentDate();
   const currentServiceTime = getCurrentServiceTime();
   const currentServiceDate = getCurrentServiceDate();
 
-  let departures;
-
-  departures = getStoptimes(
+  const departures = getStoptimes(
     {
       stop_id: stopId,
       date: currentServiceDate,
@@ -34,17 +34,18 @@ export const getDeparturesForStop = (
   // retrieve human readable stopname for specified stop
   // this maybe shouldn't go here
   const [stopName] = getStops({ stop_id: stopId });
+  // const stopName = { stop_name: 'N/A' };
 
   // move below to dedicated print/display function?
   // formatting and printing output is beyond the original scope
   console.log(
-    `\n${stopName.stop_name}\t(ID: ${stopId})\nServiceTime:\t\t${currentServiceTime}\nServiceDate:\t\t${currentServiceDate}\n\n${'DepartureTime'.padEnd(20)} ${'Direction'?.padStart(25)} ${'Trip ID'?.padStart(15)}\n\n--------------------------------------------------------------`,
+    `\n${stopName.stop_name}\t(ID: ${stopId})\nCurrent Date:\t\t${currentDate}\nServiceDate:\t\t${currentServiceDate}\nServiceTime:\t\t${currentServiceTime}\n\n\n${'Direction'?.padEnd(25)} ${'DepartureTime'.padStart(20)} ${'Trip ID'?.padStart(15)}\n\n--------------------------------------------------------------`,
   );
   departures.forEach((entry) => {
     const { stop_headsign, departure_time, trip_id } = entry;
     console.log(
-      `${convertServiceTimeToClockTime(departure_time as string)?.padEnd(20)} ${stop_headsign?.padStart(25)} ${trip_id?.padStart(15)}`,
+      `${stop_headsign?.padEnd(25)} ${convertServiceTimeToClockTime(departure_time as string)?.padStart(20)} ${trip_id?.padStart(15)}`,
     );
   });
-  console.log('');
+  console.log('\n');
 };
