@@ -10,5 +10,5 @@
     "downloadTimeout": 5000,
     "ignoreDuplicates": true,
     "ignoreErrors": false,
-    "sqlitePath": "/Users/apw/code/node-gtfs-pg/db/gtfs"
+    "sqlitePath": "/Users/apw/code/projects/next-departures/db/gtfs"
 }
