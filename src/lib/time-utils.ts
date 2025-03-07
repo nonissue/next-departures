@@ -10,6 +10,30 @@ export const getCurrentDate = () => {
   return formattedDate;
 };
 
+export const getCurrentServiceDate = () => {
+  const currentDate = new Date();
+  const currentTime = currentDate.toLocaleTimeString('eo', {
+    hour12: false,
+  });
+
+  const [hours, minutes, seconds] = currentTime.split(':').map(Number);
+
+  if (hours < 5) {
+    return (
+      currentDate.getFullYear() * 10000 +
+      (currentDate.getMonth() + 1) * 100 +
+      currentDate.getDate() -
+      1
+    );
+  } else {
+    return (
+      currentDate.getFullYear() * 10000 +
+      (currentDate.getMonth() + 1) * 100 +
+      currentDate.getDate()
+    );
+  }
+};
+
 export const getYesterdaysDate = () => {
   const currentDate = new Date();
   const formattedDate =
@@ -30,14 +54,41 @@ export const getCurrentTime = () => {
 };
 
 /**
+ * Gets the current time for the GTFS service day
+ * @param none
+ * @throws none
+ * @returns string currentServiceTime
+ * Converts the current clock time to the current service day time
+ * Returns the result with leading zero padding if required
+ */
+export const getCurrentServiceTime = () => {
+  const currentTime = new Date().toLocaleTimeString('eo', {
+    hour12: false,
+  });
+
+  const [hours, minutes, seconds] = currentTime.split(':').map(Number);
+
+  const currentServiceTime = `${hours < 4 ? hours + 24 : hours}:${minutes}:${seconds}`;
+  // const mockedCurrentServiceTime = `${1 < 4 ? 1 + 24 : 1}:${minutes}:${seconds}`;
+
+  return padLeadingZeros(currentServiceTime);
+};
+
+export const convertServiceTimeToClockTime = (serviceTime: string) => {
+  const [hours, minutes, seconds] = serviceTime.split(':').map(Number);
+  const clockTime = `${hours > 23 ? hours - 24 : hours}:${minutes}:${seconds}`;
+  return padLeadingZeros(clockTime);
+};
+
+/**
  * Validates the configuration object for GTFS import
  * @param interval the interval between startTime and endTime (minutes, default = 60)
  * @throws Error if agencies are missing or if agency lacks both url and path
  * @returns an object containing formatted start and stop times
  */
 export const getStartAndStopTimeFormatted = (interval: number = 60) => {
-  const targetTime = '23:30:00'; // this could be startTime.toLocaleString etc to get current
-  // const targetTime = new Date().toLocaleTimeString('eo', { hour12: false });
+  // const targetTime = '23:30:00'; // this could be startTime.toLocaleString etc to get current
+  const targetTime = new Date().toLocaleTimeString('eo', { hour12: false });
   const [hours, minutes, seconds] = targetTime.split(':').map(Number);
   const SERVICE_DAY_END_HOUR = 5;
   const normalizedStart = `${hours < SERVICE_DAY_END_HOUR ? hours + 24 : hours}:${minutes}:${seconds}`;

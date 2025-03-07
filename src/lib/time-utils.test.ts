@@ -1,7 +1,12 @@
 import { it, describe, beforeEach, afterEach, expect, vi } from 'vitest';
-import { getCurrentDate } from './time-utils.js';
+import {
+  convertServiceTimeToClockTime,
+  getCurrentDate,
+  getCurrentServiceDate,
+  getCurrentServiceTime,
+} from './time-utils.js';
 
-describe('get current date YYYYMMDD', () => {
+describe('time-utils', () => {
   beforeEach(() => {
     vi.useFakeTimers();
   });
@@ -17,6 +22,36 @@ describe('get current date YYYYMMDD', () => {
     vi.setSystemTime(date);
 
     const currentDate = getCurrentDate();
+
     expect(currentDate).toBe(20250101);
+  });
+
+  it('getCurrentServiceDate should return a service date that corresponds to the previous days date if the current time is between `00:00:00` – `04:00:00`', () => {
+    // Mock fake system date to specific date for testing
+
+    const date = new Date(2025, 0, 2, 3, 24, 0);
+    vi.setSystemTime(date);
+
+    const currentDate = getCurrentServiceDate();
+
+    expect(currentDate).toBe(20250101);
+  });
+
+  it('getCurrentServiceTime should return a service date that corresponds to the previous days date if the current time is between `00:00:00` – `04:00:00`', () => {
+    // Mock fake system date to specific date for testing
+
+    const time = new Date(2025, 0, 2, 3, 24, 0);
+    vi.setSystemTime(time);
+
+    const currentServiceTime = getCurrentServiceTime();
+
+    expect(currentServiceTime).toBe('27:24:00');
+  });
+
+  it('convertServiceTimeToClockTime correctly convert service time into clock time', () => {
+    // Mock fake system date to specific date for testing
+    const someServiceTime = '24:01:01';
+
+    expect(convertServiceTimeToClockTime(someServiceTime)).toBe('00:01:01');
   });
 });
