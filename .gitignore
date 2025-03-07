@@ -5,6 +5,8 @@ yarn-error.log*
 pnpm-debug.log*  
 pnpm-lock.yaml*  
 
+coverage/
+
 dist/
 
 .env  
