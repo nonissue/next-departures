@@ -8,6 +8,7 @@ import {
   getCurrentServiceTime,
   getStartAndStopTimeFormatted,
 } from './lib/time-utils.js';
+import { getDeparturesForStop } from './getDeparturesForStop.js';
 
 const previewConfig = async () => {
   const config = await getConfig();
@@ -28,7 +29,8 @@ const testOpeningDb = async () => {
 
   console.log(db);
 };
-const openRunClose = async (funcToRun: Function) => {
+
+export const openRunClose = async (funcToRun: Function) => {
   const config: Config = await getConfig();
 
   const db = await loadDb(config);
@@ -39,7 +41,12 @@ const openRunClose = async (funcToRun: Function) => {
 };
 
 const runner = async () => {
-  await openRunClose(testFunc);
+  const config: Config = await getConfig();
+
+  const db = await loadDb(config);
+  await getDeparturesForStop('1926');
+  closeDb(db);
+  // await openRunClose(testFunc);
 };
 
 const testFunc = async () => {
