@@ -1,4 +1,4 @@
-import { closeDb, getStoptimes, advancedQuery } from 'gtfs';
+import { closeDb } from 'gtfs';
 import { getConfig } from './utils.js';
 import { loadDb } from './db.js';
 import { Config } from './types/global.js';
