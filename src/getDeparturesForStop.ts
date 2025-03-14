@@ -1,11 +1,11 @@
-import { getStops, getStoptimes, StopTime } from 'gtfs';
+import { getStops, getStoptimes } from 'gtfs';
 import { StopDepartures } from './types/global.js';
 
 import {
   convertServiceTimeToClockTime,
   getCurrentDate,
-  getCurrentServiceDate,
-  getCurrentServiceTime,
+  getServiceDate,
+  getServiceTime,
 } from './lib/time-utils.js';
 
 const VERBOSE_MODE = false;
@@ -18,11 +18,28 @@ const VERBOSE_MODE = false;
  */
 export const getDeparturesForStop = async (
   stopId: string,
+  targetTime?: string,
   tripLookaheadIntervalMins: number = 60,
 ): Promise<StopDepartures[]> => {
+  let currentServiceTime, currentServiceDate;
+
+  if (targetTime) {
+    console.log('targetTime provided');
+
+    // currentDate = getCurrentDate();
+    currentServiceTime = getServiceTime(targetTime);
+    currentServiceDate = getServiceDate();
+    // currentServiceDate = getServiceDate();
+  } else {
+    // currentDate = getCurrentDate();
+    currentServiceTime = getServiceTime();
+    // currentServiceDate = getServiceDate();
+  }
   const currentDate = getCurrentDate();
-  const currentServiceTime = getCurrentServiceTime();
-  const currentServiceDate = getCurrentServiceDate();
+
+  console.log(
+    `curr: ${currentDate} | Service: ${currentServiceTime} ${currentServiceDate}`,
+  );
 
   const departures = getStoptimes(
     {

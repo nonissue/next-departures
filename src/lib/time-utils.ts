@@ -13,6 +13,30 @@ export const getCurrentDate = () => {
 };
 
 /**
+ * Gets the current time in the context of the current GTFS service day
+ * @param timestamp string (optional) if provided, func converts provided clock time to service time
+ * @throws none
+ * @returns string serviceTime
+ * Returns either current time in service time or provided string timestamp converted into service time
+ * Returns the result with leading zero padding if required
+ */
+export const getServiceTime = (timestamp?: string) => {
+  const targetTime =
+    timestamp ||
+    new Date().toLocaleTimeString('eo', {
+      hour12: false,
+    });
+
+  const [hours, minutes, seconds] = targetTime.split(':').map(Number);
+
+  const serviceTime = `${hours < SERVICE_DAY_END_HOUR ? hours + HOURS_IN_A_DAY : hours}:${minutes}:${seconds}`;
+  // console.log('SERVICE TIME IS MOCKED');
+  // const mockedCurrentServiceTime = `${hours < 5 ? hours + 12 : 1}:${minutes}:${seconds}`;
+
+  return padLeadingZeros(serviceTime);
+};
+
+/**
  * Gets the current date in the context of the current GTFS service date
  * @param none
  * @throws none
@@ -50,25 +74,50 @@ export const getCurrentServiceDate = () => {
 };
 
 /**
- * Gets the current time in the context of the current GTFS service day
- * @param none
+ * Gets the current date in the context of the current GTFS service date
+ * @param calendarDate
  * @throws none
- * @returns string currentServiceTime
- * Converts the current clock time to the current service day time
- * Returns the result with leading zero padding if required
+ * @returns string c
+ *
+ * Notes
+ *
+ * Service time extends past 24 hours which means service date and calendar date can diverge
+ * This function takes that into consideration, and using the constant SERVICE_DAY_END_HOUR,
+ * returns the current service day which is sometimes yesterday.
+ *
  */
-export const getCurrentServiceTime = () => {
-  const currentTime = new Date().toLocaleTimeString('eo', {
+export const getServiceDate = (calendarDate?: string, timestamp?: string) => {
+  /* 
+    if calendarDate 
+        getServiceDate with (INPUT calendarDate, getCurrentTime)
+    if timestamp
+        getServiceDate with (getCurrentDate, INPUT timestamp)
+    if timestamp & calendarDate 
+        getServiceDate with 
+  */
+
+  const targetDate = calendarDate ? new Date(calendarDate) : new Date();
+
+  const currentTime = targetDate.toLocaleTimeString('eo', {
     hour12: false,
   });
 
   const [hours, minutes, seconds] = currentTime.split(':').map(Number);
 
-  const currentServiceTime = `${hours < SERVICE_DAY_END_HOUR ? hours + HOURS_IN_A_DAY : hours}:${minutes}:${seconds}`;
-  // console.log('SERVICE TIME IS MOCKED');
-  // const mockedCurrentServiceTime = `${hours < 5 ? hours + 12 : 1}:${minutes}:${seconds}`;
-
-  return padLeadingZeros(currentServiceTime);
+  if (hours < SERVICE_DAY_END_HOUR) {
+    return (
+      targetDate.getFullYear() * 10000 +
+      (targetDate.getMonth() + 1) * 100 +
+      targetDate.getDate() -
+      1
+    );
+  } else {
+    return (
+      targetDate.getFullYear() * 10000 +
+      (targetDate.getMonth() + 1) * 100 +
+      targetDate.getDate()
+    );
+  }
 };
 
 /**

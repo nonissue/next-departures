@@ -9,7 +9,7 @@ const runGetDeparturesForStop = async () => {
 
   const db = await loadDb(config);
 
-  const res = await getDeparturesForStop('1926');
+  const res = await getDeparturesForStop('1926', '23:00:00');
   console.log(res);
 
   closeDb(db);
