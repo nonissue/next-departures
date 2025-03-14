@@ -46,10 +46,10 @@ export const getConfig = async () => {
 export function padLeadingZeros(time: string) {
   const split = time.split(':').map((d) => String(Number(d)).padStart(2, '0'));
   if (split.length !== 3) {
-    return null;
+    throw new Error(
+      "padLeadingZeros: input must be a string in the form 'HH:MM:SS'",
+    );
   }
 
   return split.join(':');
 }
-
-const downloadAndImportGtfs = () => {};
