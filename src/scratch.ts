@@ -11,7 +11,9 @@ const runGetDeparturesForStop = async () => {
   const db = await loadDb(config);
 
   const res = await getDeparturesForStop('1926', '00:15:00');
-  console.log(res);
+
+  // const res = await getDeparturesForStop('1926');
+  // console.log(res);
 
   closeDb(db);
 };
@@ -22,7 +24,7 @@ const runDownloadAndImportGtfsDataToDb = async () => {
 };
 
 const play = () => {
-  return getServiceDate('2025-03-12', '10:00:00');
+  return getServiceDate('10:00:00');
 };
 
 // console.log(`getServiceDate: ${play()}`);

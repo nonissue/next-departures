@@ -8,13 +8,15 @@ import {
   getServiceTime,
 } from './lib/time-utils.js';
 
-const VERBOSE_MODE = false;
+const VERBOSE_MODE = true;
 
 /**
- * Validates the configuration object for GTFS import
+ * getDeparturesForStop
  * @param stopId - string - `node-gtfs` docs type this as string
+ * @param targetTime - string (optional) - timestamp to run query at specific time
+ * @param tripLookaheadIntervalMins - number - not implemented yet
  * @throws Error if stopId isn't provided
- * @returns upcoming departures for specified stop
+ * @returns Array of Stoptimes[] containn objects for each matching upcoming departures for specified stop at current time (or at targetTime, if provided)
  */
 export const getDeparturesForStop = async (
   stopId: string,
@@ -23,23 +25,21 @@ export const getDeparturesForStop = async (
 ): Promise<StopDepartures[]> => {
   let currentServiceTime, currentServiceDate;
 
-  if (targetTime) {
-    console.log('targetTime provided');
-
-    // currentDate = getCurrentDate();
-    currentServiceTime = getServiceTime(targetTime);
-    currentServiceDate = getServiceDate('2025-03-12', '10:00:00');
-    // currentServiceDate = getServiceDate();
-  } else {
-    // currentDate = getCurrentDate();
-    currentServiceTime = getServiceTime();
-    // currentServiceDate = getServiceDate();
-  }
   const currentDate = getCurrentDate();
 
-  console.log(
-    `curr: ${currentDate} | Service: ${currentServiceTime} ${currentServiceDate}`,
-  );
+  if (targetTime) {
+    currentServiceTime = getServiceTime(targetTime);
+    currentServiceDate = getServiceDate(targetTime);
+  } else {
+    currentServiceDate = getServiceDate();
+    currentServiceTime = getServiceTime();
+  }
+
+  // if (VERBOSE_MODE) {
+  //   console.log(
+  //     `curr: ${currentDate} | Service: ${currentServiceTime} ${currentServiceDate}`,
+  //   );
+  // }
 
   const departures = getStoptimes(
     {
@@ -60,14 +60,12 @@ export const getDeparturesForStop = async (
   // retrieve human readable stopname for specified stop
   // this maybe shouldn't go here
 
-  // const stopName = { stop_name: 'N/A' };
-
   // move below to dedicated print/display function?
   // formatting and printing output is beyond the original scope
   if (VERBOSE_MODE) {
     const [stopName] = getStops({ stop_id: stopId });
     console.log(
-      `\n${stopName.stop_name}\t(ID: ${stopId})\nCurrent Date:\t\t${currentDate}\nServiceDate:\t\t${currentServiceDate}\nServiceTime:\t\t${currentServiceTime}\n\n\n${'Direction'?.padEnd(25)} ${'DepartureTime'.padStart(20)} ${'Trip ID'?.padStart(15)}\n\n--------------------------------------------------------------`,
+      `\n${stopName.stop_name}\t(ID: ${stopId})\ncurrentDate:\t\t${currentDate}\nServiceDate:\t\t${currentServiceDate}\nServiceTime:\t\t${currentServiceTime}\n\n\n${'Direction'?.padEnd(25)} ${'DepartureTime'.padStart(20)} ${'Trip ID'?.padStart(15)}\n\n--------------------------------------------------------------`,
     );
 
     departures.forEach((entry) => {

@@ -45,10 +45,9 @@ export const getServiceTime = (timestamp?: string) => {
 /**
  * getServiceDate
  * Gets the current date in the context of the current GTFS service date
- * @param calendarDate YYYY-MM-DD
  * @param timestamp
  * @throws none
- * @returns string c
+ * @returns string
  *
  * Notes
  *
@@ -57,69 +56,13 @@ export const getServiceTime = (timestamp?: string) => {
  * returns the current service day which is sometimes yesterday.
  *
  */
-export const getServiceDate = (calendarDate?: string, timestamp?: string) => {
-  /* 
-    if calendarDate 
-        getServiceDate with (INPUT calendarDate, getCurrentTime)
-    if timestamp
-        getServiceDate with (getCurrentDate, INPUT timestamp)
-    if timestamp & calendarDate 
-        getServiceDate with 
-  */
-
-  let targetDate;
-  if (calendarDate && timestamp) {
-    targetDate = new Date(`${calendarDate}T${timestamp}`);
-  } else if (calendarDate && !timestamp) {
-    targetDate = new Date(`${calendarDate}T${getCurrentTimeAsString()}`);
-  } else {
-    targetDate = new Date();
-  }
-
-  const currentTime = targetDate.toLocaleTimeString('eo', {
-    hour12: false,
-  });
-
-  const [hours, minutes, seconds] = currentTime.split(':').map(Number);
-
-  if (hours < SERVICE_DAY_END_HOUR) {
-    return (
-      targetDate.getFullYear() * 10000 +
-      (targetDate.getMonth() + 1) * 100 +
-      targetDate.getDate() -
-      1
-    );
-  } else {
-    return (
-      targetDate.getFullYear() * 10000 +
-      (targetDate.getMonth() + 1) * 100 +
-      targetDate.getDate()
-    );
-  }
-};
-
-/**
- *
- * DELETABLE? SUPERSEDED BY getServiceDate()
- *
- *
- * Gets the current date in the context of the current GTFS service date
- * @param none
- * @throws none
- * @returns string c
- *
- * Notes
- *
- * Service time extends past 24 hours which means service date and calendar date can diverge
- * This function takes that into consideration, and using the constant SERVICE_DAY_END_HOUR,
- * returns the current service day which is sometimes yesterday.
- *
- */
-const getCurrentServiceDate = () => {
+export const getServiceDate = (timestamp?: string) => {
   const currentDate = new Date();
-  const currentTime = currentDate.toLocaleTimeString('eo', {
-    hour12: false,
-  });
+  const currentTime =
+    timestamp ??
+    currentDate.toLocaleTimeString('eo', {
+      hour12: false,
+    });
 
   const [hours, minutes, seconds] = currentTime.split(':').map(Number);
 
