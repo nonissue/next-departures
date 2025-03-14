@@ -28,7 +28,7 @@ export const getDeparturesForStop = async (
 
     // currentDate = getCurrentDate();
     currentServiceTime = getServiceTime(targetTime);
-    currentServiceDate = getServiceDate();
+    currentServiceDate = getServiceDate('2025-03-12', '10:00:00');
     // currentServiceDate = getServiceDate();
   } else {
     // currentDate = getCurrentDate();

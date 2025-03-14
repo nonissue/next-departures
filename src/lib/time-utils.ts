@@ -12,6 +12,12 @@ export const getCurrentDate = () => {
   return formattedDate;
 };
 
+export const getCurrentTimeAsString = () => {
+  return new Date().toLocaleTimeString('eo', {
+    hour12: false,
+  });
+};
+
 /**
  * Gets the current time in the context of the current GTFS service day
  * @param timestamp string (optional) if provided, func converts provided clock time to service time
@@ -37,45 +43,10 @@ export const getServiceTime = (timestamp?: string) => {
 };
 
 /**
+ * getServiceDate
  * Gets the current date in the context of the current GTFS service date
- * @param none
- * @throws none
- * @returns string c
- *
- * Notes
- *
- * Service time extends past 24 hours which means service date and calendar date can diverge
- * This function takes that into consideration, and using the constant SERVICE_DAY_END_HOUR,
- * returns the current service day which is sometimes yesterday.
- *
- */
-export const getCurrentServiceDate = () => {
-  const currentDate = new Date();
-  const currentTime = currentDate.toLocaleTimeString('eo', {
-    hour12: false,
-  });
-
-  const [hours, minutes, seconds] = currentTime.split(':').map(Number);
-
-  if (hours < SERVICE_DAY_END_HOUR) {
-    return (
-      currentDate.getFullYear() * 10000 +
-      (currentDate.getMonth() + 1) * 100 +
-      currentDate.getDate() -
-      1
-    );
-  } else {
-    return (
-      currentDate.getFullYear() * 10000 +
-      (currentDate.getMonth() + 1) * 100 +
-      currentDate.getDate()
-    );
-  }
-};
-
-/**
- * Gets the current date in the context of the current GTFS service date
- * @param calendarDate
+ * @param calendarDate YYYY-MM-DD
+ * @param timestamp
  * @throws none
  * @returns string c
  *
@@ -96,7 +67,14 @@ export const getServiceDate = (calendarDate?: string, timestamp?: string) => {
         getServiceDate with 
   */
 
-  const targetDate = calendarDate ? new Date(calendarDate) : new Date();
+  let targetDate;
+  if (calendarDate && timestamp) {
+    targetDate = new Date(`${calendarDate}T${timestamp}`);
+  } else if (calendarDate && !timestamp) {
+    targetDate = new Date(`${calendarDate}T${getCurrentTimeAsString()}`);
+  } else {
+    targetDate = new Date();
+  }
 
   const currentTime = targetDate.toLocaleTimeString('eo', {
     hour12: false,
@@ -116,6 +94,47 @@ export const getServiceDate = (calendarDate?: string, timestamp?: string) => {
       targetDate.getFullYear() * 10000 +
       (targetDate.getMonth() + 1) * 100 +
       targetDate.getDate()
+    );
+  }
+};
+
+/**
+ *
+ * DELETABLE? SUPERSEDED BY getServiceDate()
+ *
+ *
+ * Gets the current date in the context of the current GTFS service date
+ * @param none
+ * @throws none
+ * @returns string c
+ *
+ * Notes
+ *
+ * Service time extends past 24 hours which means service date and calendar date can diverge
+ * This function takes that into consideration, and using the constant SERVICE_DAY_END_HOUR,
+ * returns the current service day which is sometimes yesterday.
+ *
+ */
+const getCurrentServiceDate = () => {
+  const currentDate = new Date();
+  const currentTime = currentDate.toLocaleTimeString('eo', {
+    hour12: false,
+  });
+
+  const [hours, minutes, seconds] = currentTime.split(':').map(Number);
+
+  if (hours < SERVICE_DAY_END_HOUR) {
+    return (
+      currentDate.getFullYear() * 10000 +
+      (currentDate.getMonth() + 1) * 100 +
+      currentDate.getDate() -
+      1
+    );
+  } else {
+    return (
+      currentDate.getFullYear() * 10000 +
+      (currentDate.getMonth() + 1) * 100 +
+      currentDate.getDate()
     );
   }
 };
