@@ -48,6 +48,16 @@ export interface Config {
   logFunction?: (message: string) => void;
 }
 
+/* alt stopDepartures
+  type StopDepartures = Pick<
+    StopTime,
+    | 'trip_id'
+    | 'departure_time'
+    | 'departure_timestamp'
+    | 'stop_id'
+    | 'stop_headsign'
+  >;
+*/
 export interface StopDepartures {
   stop_id: string;
   trip_id: string;
