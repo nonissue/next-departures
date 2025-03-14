@@ -1,10 +1,7 @@
 import { Options } from 'csv-parse';
 import { Database } from 'better-sqlite3';
 
-// export interface QueryOptions {
-//   db?: Database;
-//   bounding_box_side_m?: number;
-// }
+// a lot of these taken from node-gtfs
 
 export interface ConfigAgency {
   exclude?: string[];
@@ -49,4 +46,12 @@ export interface Config {
   agencies: ConfigAgency[];
   verbose?: boolean;
   logFunction?: (message: string) => void;
+}
+
+export interface StopDepartures {
+  stop_id: string;
+  trip_id: string;
+  stop_headsign: string;
+  departure_time: string;
+  departure_timestamp: number;
 }
