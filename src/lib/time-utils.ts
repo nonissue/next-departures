@@ -1,11 +1,8 @@
 import { padLeadingZeros } from '../utils.js';
-
-const SERVICE_DAY_END_HOUR = 5;
-const LAST_CLOCK_HOUR = 23;
-const HOURS_IN_A_DAY = 24;
+import { HOURS_IN_A_DAY, LAST_CLOCK_HOUR } from './constants.js';
+import { SERVICE_DAY_END_HOUR } from '../config.js';
 
 export const getCurrentDate = () => {
-  // const currentDate = new Date()
   const currentDate = new Date();
 
   const formattedDate =
@@ -15,6 +12,19 @@ export const getCurrentDate = () => {
   return formattedDate;
 };
 
+/**
+ * Gets the current date in the context of the current GTFS service date
+ * @param none
+ * @throws none
+ * @returns string c
+ *
+ * Notes
+ *
+ * Service time extends past 24 hours which means service date and calendar date can diverge
+ * This function takes that into consideration, and using the constant SERVICE_DAY_END_HOUR,
+ * returns the current service day which is sometimes yesterday.
+ *
+ */
 export const getCurrentServiceDate = () => {
   const currentDate = new Date();
   const currentTime = currentDate.toLocaleTimeString('eo', {
@@ -40,7 +50,7 @@ export const getCurrentServiceDate = () => {
 };
 
 /**
- * Gets the current time for the GTFS service day
+ * Gets the current time in the context of the current GTFS service day
  * @param none
  * @throws none
  * @returns string currentServiceTime
@@ -61,6 +71,12 @@ export const getCurrentServiceTime = () => {
   return padLeadingZeros(currentServiceTime);
 };
 
+/**
+ * Todo
+ * @param serviceTime string
+ * @returns string
+ * taken from `node-gtfs`
+ */
 export const convertServiceTimeToClockTime = (serviceTime: string) => {
   const [hours, minutes, seconds] = serviceTime.split(':').map(Number);
   const clockTime = `${hours > LAST_CLOCK_HOUR ? hours - HOURS_IN_A_DAY : hours}:${minutes}:${seconds}`;
@@ -80,6 +96,7 @@ export function calculateSecondsFromMidnight(time: string): number | null {
   // }
 
   const [hours, minutes, seconds] = time.split(':').map(Number);
+
   if ([hours, minutes, seconds].some(isNaN) || minutes >= 60 || seconds >= 60) {
     return null;
   }
