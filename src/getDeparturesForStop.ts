@@ -1,4 +1,5 @@
-import { getStops, getStoptimes } from 'gtfs';
+import { getStops, getStoptimes, StopTime } from 'gtfs';
+import { StopDepartures } from './types/global.js';
 
 import {
   convertServiceTimeToClockTime,
@@ -13,12 +14,12 @@ const VERBOSE_MODE = false;
  * Validates the configuration object for GTFS import
  * @param stopId - string - `node-gtfs` docs type this as string
  * @throws Error if stopId isn't provided
- * @returns Nothing
+ * @returns upcoming departures for specified stop
  */
 export const getDeparturesForStop = async (
   stopId: string,
   tripLookaheadIntervalMins: number = 60,
-) => {
+): Promise<StopDepartures[]> => {
   const currentDate = getCurrentDate();
   const currentServiceTime = getCurrentServiceTime();
   const currentServiceDate = getCurrentServiceDate();
@@ -27,13 +28,17 @@ export const getDeparturesForStop = async (
     {
       stop_id: stopId,
       date: currentServiceDate,
-      // start_time: '10:00:00',
       start_time: currentServiceTime,
-      // end_time: '10:20:00',
     },
-    ['trip_id', 'stop_headsign', 'departure_time'],
+    [
+      'stop_id',
+      'trip_id',
+      'stop_headsign',
+      'departure_time',
+      'departure_timestamp',
+    ],
     [['departure_time', 'ASC']],
-  );
+  ) as StopDepartures[];
 
   // retrieve human readable stopname for specified stop
   // this maybe shouldn't go here
