@@ -1,10 +1,10 @@
 import { closeDb } from 'gtfs';
 import { getConfig } from './utils.js';
-import { loadDb } from './db.js';
+import { importGtfsDataToDb, loadDb } from './db.js';
 import { Config } from './types/global.js';
 import { getDeparturesForStop } from './getDeparturesForStop.js';
 
-const runner = async () => {
+const runGetDeparturesForStop = async () => {
   const config: Config = await getConfig();
 
   const db = await loadDb(config);
@@ -15,4 +15,10 @@ const runner = async () => {
   closeDb(db);
 };
 
-runner();
+const runDownloadAndImportGtfsDataToDb = async () => {
+  const config: Config = await getConfig();
+  await importGtfsDataToDb(config);
+};
+
+runGetDeparturesForStop();
+// await runDownloadAndImportGtfsDataToDb();
