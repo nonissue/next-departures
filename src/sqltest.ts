@@ -1,16 +1,35 @@
 import { closeDb } from 'gtfs';
 import { loadDb } from './db.js';
-import { getCurrentDate } from './lib/time-utils.js';
+import {
+  getCurrentDate,
+  getServiceDate,
+  getServiceTime,
+} from './lib/time-utils.js';
 import { getConfig } from './lib/utils.js';
 import { Config } from './types/global.js';
+import { Database } from 'better-sqlite3';
 
-async function getDepartureTimes(db: any, stopId: string, targetDate?: string) {
-  let testDate;
+async function getDepartureTimes(
+  db: Database,
+  stopId: string,
+  targetDate?: string,
+  targetTime?: string,
+) {
+  let queryDate;
+
   if (!targetDate) {
-    testDate = getCurrentDate();
+    queryDate = getServiceDate();
   } else {
-    testDate = targetDate;
+    queryDate = targetDate;
   }
+
+  let queryTime;
+  if (!targetTime) {
+    queryTime = getServiceTime();
+  } else {
+    queryTime = getServiceTime(targetTime);
+  }
+
   const queryResults = db
     .prepare(
       `
@@ -31,7 +50,7 @@ async function getDepartureTimes(db: any, stopId: string, targetDate?: string) {
         ORDER BY stop_times.departure_time;
     `,
     )
-    .all([testDate, stopId]);
+    .all([queryDate, stopId]);
 
   return queryResults;
 }

@@ -4,6 +4,8 @@ import { importGtfsDataToDb, loadDb } from './db.js';
 import { Config } from './types/global.js';
 import { getDeparturesForStop } from './getDeparturesForStop.js';
 import { getServiceDate } from './lib/time-utils.js';
+import { getStopsWithParentStations } from './getStops.js';
+import { log } from 'console';
 
 const runGetDeparturesForStop = async () => {
   const config: Config = await getConfig();
@@ -23,10 +25,15 @@ const runDownloadAndImportGtfsDataToDb = async () => {
   await importGtfsDataToDb(config);
 };
 
-const play = () => {
-  return getServiceDate('10:00:00');
+const play = async () => {
+  const config: Config = await getConfig();
+
+  const db = await loadDb(config);
+  console.log(getStopsWithParentStations());
+  closeDb(db);
 };
 
+await play();
 // console.log(`getServiceDate: ${play()}`);
-runGetDeparturesForStop();
+// runGetDeparturesForStop();
 // await runDownloadAndImportGtfsDataToDb();

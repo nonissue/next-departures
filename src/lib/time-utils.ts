@@ -82,6 +82,18 @@ export const getServiceDate = (timestamp?: string) => {
   }
 };
 
+export const getServiceTimeAndDate = (
+  targetDate?: string,
+  targetTime?: string,
+) => {
+  let cDate, cTime;
+  if (!targetDate) {
+    cDate = getServiceDate();
+  } else {
+    cDate = getServiceDate(targetDate);
+  }
+};
+
 /**
  * Todo
  * @param serviceTime string
