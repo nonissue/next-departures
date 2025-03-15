@@ -1,5 +1,5 @@
 import { closeDb } from 'gtfs';
-import { getConfig } from './utils.js';
+import { getConfig } from './lib/utils.js';
 import { importGtfsDataToDb, loadDb } from './db.js';
 import { Config } from './types/global.js';
 import { getDeparturesForStop } from './getDeparturesForStop.js';

@@ -1,5 +1,5 @@
 import { importGtfs, openDb } from 'gtfs';
-import { validateConfigForImport } from './utils.js';
+import { validateConfigForImport } from './lib/utils.js';
 import { Config } from './types/global.js';
 
 export const loadDb = async (config: Config) => {

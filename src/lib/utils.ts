@@ -1,6 +1,6 @@
 import { readFile } from 'fs/promises';
 import path from 'node:path';
-import { Config } from './types/global.js';
+import { Config } from '../types/global.js';
 
 /**
  * Validates the configuration object for GTFS import
