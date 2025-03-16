@@ -12,7 +12,7 @@ const runGetDeparturesForStop = async () => {
 
   const db = await loadDb(config);
 
-  const res = await getDeparturesForStop('1926', '00:15:00');
+  const res = await getDeparturesForStop('1926', '23:15:00');
 
   // const res = await getDeparturesForStop('1926');
   // console.log(res);
@@ -33,7 +33,7 @@ const play = async () => {
   closeDb(db);
 };
 
-await play();
+// await play();
 // console.log(`getServiceDate: ${play()}`);
-// runGetDeparturesForStop();
+runGetDeparturesForStop();
 // await runDownloadAndImportGtfsDataToDb();

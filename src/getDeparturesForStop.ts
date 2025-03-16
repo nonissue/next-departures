@@ -4,9 +4,8 @@ import { StopDepartures } from './types/global.js';
 import {
   convertServiceTimeToClockTime,
   getCurrentDate,
-  getServiceDate,
-  getServiceTime,
 } from './lib/time-utils.js';
+import { getServiceDate, getServiceTime } from './lib/new-time-utils.js';
 
 const VERBOSE_MODE = true;
 

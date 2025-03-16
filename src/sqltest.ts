@@ -1,10 +1,6 @@
 import { closeDb } from 'gtfs';
 import { loadDb } from './db.js';
-import {
-  getCurrentDate,
-  getServiceDate,
-  getServiceTime,
-} from './lib/time-utils.js';
+import { getServiceDate, getServiceTime } from './lib/new-time-utils.js';
 import { getConfig } from './lib/utils.js';
 import { Config } from './types/global.js';
 import { Database } from 'better-sqlite3';
@@ -39,11 +35,13 @@ async function getDepartureTimes(
             WHERE date = ? AND exception_type = 1
         ),
         TripInstances AS (
-            SELECT trips.trip_id, trips.service_id
+            SELECT trips.trip_id, trips.service_id, trips.direction_id, trips.route_id
             FROM trips
             INNER JOIN ValidServices ON trips.service_id = ValidServices.service_id
         )
-        SELECT stop_times.departure_time, stop_times.trip_id, stop_times.stop_sequence
+        -- SELECT stop_times.departure_time, stop_times.trip_id, stop_times.stop_sequence
+        -- SELECT stop_times.departure_time, stop_times.trip_id, stop_times.stop_sequence, service_id
+        SELECT *
         FROM stop_times
         INNER JOIN TripInstances ON stop_times.trip_id = TripInstances.trip_id
         WHERE stop_times.stop_id = ?
