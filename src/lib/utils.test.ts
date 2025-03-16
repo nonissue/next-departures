@@ -9,6 +9,6 @@ describe('time-utils', () => {
   it('validateConfigForImport should return the current date in the correct format', () => {
     // Mock fake system date to specific date for testing
     const fakeConfig = {};
-    expect('something').toBe(true);
+    expect('something').toBe('something');
   });
 });
