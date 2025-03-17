@@ -22,17 +22,13 @@ export const getDeparturesForStop = async (
   targetTime?: string,
   tripLookaheadIntervalMins: number = 60,
 ): Promise<StopDepartures[]> => {
-  let currentServiceTime, currentServiceDate;
+  if (!stopId) throw new Error('stopId is required');
 
   const currentDate = getCurrentDate();
 
-  if (targetTime) {
-    currentServiceTime = getServiceTime(targetTime);
-    currentServiceDate = getServiceDate(targetTime);
-  } else {
-    currentServiceDate = getServiceDate();
-    currentServiceTime = getServiceTime();
-  }
+  const [currentServiceDate, currentServiceTime] = targetTime
+    ? [getServiceDate({ targetTime }), getServiceTime(targetTime)]
+    : [getServiceDate(), getServiceTime()];
 
   // if (VERBOSE_MODE) {
   //   console.log(

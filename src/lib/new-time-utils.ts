@@ -1,39 +1,41 @@
 import { SERVICE_DAY_END_HOUR } from '../config.js';
+interface ServiceDateOptions {
+  calendarDate?: string;
+  targetTime?: string;
+}
 
-export const getServiceDate = (
-  calendarDate?: string,
-  targetTime?: string,
-): number => {
-  if (calendarDate && !targetTime) {
-    throw new Error(
-      "If 'calendarDate' is provided, 'targetTime' must also be provided.",
-    );
-  }
-
-  // Use provided date or default to today
+export const getServiceDate = ({
+  calendarDate,
+  targetTime,
+}: ServiceDateOptions = {}): number => {
   const now = new Date();
-  const serviceBaseDate = calendarDate
+  const timeStr = targetTime ?? now.toTimeString().slice(0, 8);
+  const [hours] = timeStr.split(':').map(Number);
+  const baseDate = calendarDate
     ? new Date(
-        Number(calendarDate.slice(0, 4)), // Year
-        Number(calendarDate.slice(4, 6)) - 1, // Month (0-based)
-        Number(calendarDate.slice(6, 8)), // Day
+        Number(calendarDate.slice(0, 4)),
+        Number(calendarDate.slice(4, 6)) - 1,
+        Number(calendarDate.slice(6, 8)),
       )
     : now;
 
-  // Use provided time or default to current time
-  const timeString = targetTime ?? now.toTimeString().slice(0, 8);
-  const [hours] = timeString.split(':').map(Number);
+  const adjustedDate =
+    hours < SERVICE_DAY_END_HOUR
+      ? new Date(
+          baseDate.getFullYear(),
+          baseDate.getMonth(),
+          baseDate.getDate() - 1,
+        )
+      : new Date(
+          baseDate.getFullYear(),
+          baseDate.getMonth(),
+          baseDate.getDate(),
+        );
 
-  // Adjust service date based on GTFS service day rules
-  if (hours < SERVICE_DAY_END_HOUR) {
-    serviceBaseDate.setDate(serviceBaseDate.getDate() - 1);
-  }
-
-  // Return in YYYYMMDD format
   return (
-    serviceBaseDate.getFullYear() * 10000 +
-    (serviceBaseDate.getMonth() + 1) * 100 +
-    serviceBaseDate.getDate()
+    adjustedDate.getFullYear() * 10000 +
+    (adjustedDate.getMonth() + 1) * 100 +
+    adjustedDate.getDate()
   );
 };
 

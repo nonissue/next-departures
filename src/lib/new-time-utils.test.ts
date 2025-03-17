@@ -55,14 +55,6 @@ describe('new-time-utils', () => {
     const date = new Date(2025, 0, 2, 10, 24, 0);
     vi.setSystemTime(date);
 
-    expect(() => getServiceDate(date.toLocaleDateString())).toThrowError();
-  });
-
-  it('getServiceDate should return a service date that corresponds to the CURRENT days date if the current time is between `05:00:00` – `23:00:00`', () => {
-    // Mock fake system date to specific date for testing
-    const date = new Date(2025, 0, 2, 10, 24, 0);
-    vi.setSystemTime(date);
-
     const currentDate = getServiceDate();
 
     expect(currentDate).toBe(20250102);

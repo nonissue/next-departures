@@ -1,6 +1,7 @@
 import { closeDb } from 'gtfs';
 import { loadDb } from './db.js';
 import { getServiceDate, getServiceTime } from './lib/new-time-utils.js';
+import { getTransitStations } from './lib/getTransitStations.js';
 import { getConfig } from './lib/utils.js';
 import { Config } from './types/global.js';
 import { Database } from 'better-sqlite3';
@@ -58,7 +59,14 @@ const main = async () => {
 
   const db = await loadDb(config);
 
-  getDepartureTimes(db, '2114', '20250315').then(console.log);
+  const trainStations = await getTransitStations(db);
+  trainStations.forEach((entry) => {
+    const { stop_id, stop_name, parent_station } = entry;
+    console.log(
+      `${stop_name?.padEnd(35)} ${parent_station?.padStart(20)} ${stop_id?.padStart(15)}`,
+    );
+  });
+  // getDepartureTimes(db, '2114', '20250315').then(console.log);
 
   closeDb(db);
 };
