@@ -7,7 +7,7 @@ import {
 } from './lib/time-utils.js';
 import { getServiceDate, getServiceTime } from './lib/time-utils.js';
 
-const VERBOSE_MODE = true;
+const VERBOSE_MODE = false;
 
 /**
  * getDeparturesForStop
@@ -52,7 +52,7 @@ export const getDeparturesForStop = async (
     [['departure_time', 'ASC']],
   ) as StopDepartures[];
 
-  const truncatedDepartures = departures.slice(0, 5);
+  // const truncatedDepartures = departures.slice(0, 5);
 
   // retrieve human readable stopname for specified stop
   // this maybe shouldn't go here
@@ -66,7 +66,7 @@ export const getDeparturesForStop = async (
     //   `\n${stopName.stop_name}\t(ID: ${stopId})\ncurrentDate:\t\t${currentDate}\nServiceDate:\t\t${currentServiceDate}\nServiceTime:\t\t${currentServiceTime}\n\n\n${'Direction'?.padEnd(25)} ${'DepartureTime'.padStart(20)} ${'Trip ID'?.padStart(15)}\n\n--------------------------------------------------------------`,
     // );
 
-    truncatedDepartures.forEach((entry) => {
+    departures.forEach((entry) => {
       const { stop_headsign, departure_time, trip_id } = entry;
       console.log(
         `${stop_headsign?.padEnd(25)} ${convertServiceTimeToClockTime(departure_time as string)?.padStart(20)} ${trip_id?.padStart(15)}`,
