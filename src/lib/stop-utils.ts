@@ -62,10 +62,7 @@ export const getClosestStation = async ({ lat, lon }: GeoCoordinate = {}) => {
     },
   );
 
-  const closestStation = nearbyStations[0];
-  console.log(closestStation);
-
-  return closestStation;
+  return nearbyStations[0];
 };
 
 export const getStopsForParentStation = async (parent_station_id: string) => {
@@ -77,16 +74,16 @@ export const getStopsForParentStation = async (parent_station_id: string) => {
   return platforms;
 };
 
-const main = async () => {
-  const config: Config = await getConfig();
+// const main = async () => {
+//   const config: Config = await getConfig();
 
-  const db = await loadDb(config);
+//   const db = await loadDb(config);
 
-  const closestStation = await getClosestStation(TEST_COORDS);
-  const closestStops = await getStopsForParentStation(closestStation.stop_id);
-  console.log(closestStops);
+//   const closestStation = await getClosestStation(TEST_COORDS);
+//   const closestStops = await getStopsForParentStation(closestStation.stop_id);
+//   console.log(closestStops);
 
-  closeDb(db);
-};
+//   closeDb(db);
+// };
 
-await main();
+// await main();
