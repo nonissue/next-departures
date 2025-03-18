@@ -1,3 +1,1 @@
 const main = async () => {};
-
-main();
