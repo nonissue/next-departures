@@ -1,9 +1,9 @@
 import { closeDb } from 'gtfs';
-import { loadDb } from './db.js';
-import { getServiceDate, getServiceTime } from './lib/time-utils.js';
-import { getTransitStations } from './lib/stop-utils.js';
-import { getConfig } from './lib/utils.js';
-import { Config } from './types/global.js';
+import { loadDb } from '../db.js';
+import { getServiceDate, getServiceTime } from '../lib/time-utils.js';
+import { getTransitStations } from '../lib/stop-utils.js';
+import { getConfig } from '../lib/utils.js';
+import { Config } from '../types/global.js';
 import { Database } from 'better-sqlite3';
 
 async function getDepartureTimes(
@@ -61,19 +61,25 @@ const main = async () => {
 
   const trainStations = await getTransitStations(db);
 
-  let inc = 1;
-  trainStations.forEach((entry) => {
-    const { stop_id, stop_name } = entry;
-
+  const printTrainStations = async () => {
     console.log(
-      `${(inc + '').padStart(2)}. ${stop_name?.padEnd(35)} ${stop_id?.padStart(15)}`,
+      `\n┌───────────────────────── λ ──────────────────────────┐\n│                                                      │\n│   function - getTrainStations()                      │\n│   description - get all light rail stations (GTFS)   │\n│                                                      │\n└──────────────────────────────────────────────────────┘\n\n${('' + '').padStart(2)}  ${'stop_name'.padEnd(35)} ${'stop_id'?.padStart(15)}\n    ┄┄┄┄┄┄┄┄┄                                   ┄┄┄┄┄┄┄`,
     );
+    let inc = 1;
+    trainStations.forEach((entry) => {
+      const { stop_id, stop_name } = entry;
 
-    inc = inc + 1;
-  });
-  // getDepartureTimes(db, '2114', '20250315').then(console.log);
+      console.log(
+        `${(inc + '').padStart(2)}. ${stop_name?.padEnd(35)} ${stop_id?.padStart(15)}`,
+      );
 
-  closeDb(db);
+      inc = inc + 1;
+    });
+
+    closeDb(db);
+  };
+
+  await printTrainStations();
 };
 
 await main();

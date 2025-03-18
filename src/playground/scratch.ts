@@ -1,11 +1,8 @@
 import { closeDb } from 'gtfs';
-import { getConfig } from './lib/utils.js';
-import { importGtfsDataToDb, loadDb } from './db.js';
-import { Config } from './types/global.js';
-import { getDeparturesForStop } from './getDeparturesForStop.js';
-import { getServiceDate } from './lib/time-utils.js';
-import { getStopsWithParentStations } from './getStops.js';
-import { log } from 'console';
+import { getConfig } from '../lib/utils.js';
+import { importGtfsDataToDb, loadDb } from '../db.js';
+import { Config } from '../types/global.js';
+import { getDeparturesForStop } from '../getDeparturesForStop.js';
 
 const runGetDeparturesForStop = async () => {
   const config: Config = await getConfig();
@@ -29,7 +26,7 @@ const play = async () => {
   const config: Config = await getConfig();
 
   const db = await loadDb(config);
-  console.log(getStopsWithParentStations());
+
   closeDb(db);
 };
 
