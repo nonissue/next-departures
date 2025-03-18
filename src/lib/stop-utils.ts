@@ -1,22 +1,6 @@
 import { Database } from 'better-sqlite3';
-import { closeDb, Config, getStops } from 'gtfs';
-import { TEST_COORDS } from './constants.js';
-import { getConfig } from './utils.js';
-import { loadDb } from '../db.js';
-
-interface GeoCoordinate {
-  lat?: number;
-  lon?: number;
-}
-
-export interface Stop {
-  stop_id: string;
-  stop_name: string;
-  parent_station?: string;
-  stop_lat: number;
-  stop_lon: number;
-  // other stop properties...
-}
+import { getStops, Stop } from 'gtfs';
+import { GeoCoordinate } from '../types/global.js';
 
 /**
  * Retrieves all transit stations from the GTFS stops table.
@@ -25,7 +9,7 @@ export interface Stop {
  *
  * @returns Promise<Stop[]> - an array of stop objects representing transit stations.
  */
-export const getTransitStations = async (db: Database): Promise<Stop[]> => {
+export const getTransitStations = (db: Database): Stop[] => {
   const stations = `
     SELECT *
     FROM stops
@@ -46,11 +30,9 @@ export const getTransitStations = async (db: Database): Promise<Stop[]> => {
  *
  * @returns Promise<Stop[]> - an array of stop objects representing transit stations.
  */
-export const getClosestStation = async ({ lat, lon }: GeoCoordinate = {}) => {
+export const getClosestStation = ({ lat, lon }: GeoCoordinate = {}): Stop => {
   const nearbyStations = getStops(
     {
-      //   stop_lat: 53.542026,
-      //   stop_lon: -113.506601,
       location_type: 1,
       stop_lat: lat,
       stop_lon: lon,
@@ -65,7 +47,7 @@ export const getClosestStation = async ({ lat, lon }: GeoCoordinate = {}) => {
   return nearbyStations[0];
 };
 
-export const getStopsForParentStation = async (parent_station_id: string) => {
+export const getStopsForParentStation = (parent_station_id: string): Stop[] => {
   const platforms = getStops({
     parent_station: parent_station_id,
     location_type: 0,
