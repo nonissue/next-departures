@@ -1,1 +1,2 @@
 export const SERVICE_DAY_END_HOUR = 5;
+export const STATION_SEARCH_BOUNDING_BOX_AREA = 5000;
