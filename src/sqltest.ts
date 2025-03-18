@@ -2,7 +2,7 @@ import { closeDb } from 'gtfs';
 import { loadDb } from './db.js';
 import { getServiceDate, getServiceTime } from './lib/new-time-utils.js';
 import { getTransitStations } from './lib/getTransitStations.js';
-import { formatCoordinateForDisplay, getConfig } from './lib/utils.js';
+import { getConfig } from './lib/utils.js';
 import { Config } from './types/global.js';
 import { Database } from 'better-sqlite3';
 
@@ -63,10 +63,10 @@ const main = async () => {
 
   let inc = 1;
   trainStations.forEach((entry) => {
-    const { stop_id, stop_name, stop_lat, stop_lon } = entry;
+    const { stop_id, stop_name } = entry;
 
     console.log(
-      `${(inc + '').padStart(2)}. ${stop_name?.padEnd(35)} ${stop_id?.padStart(15)} ${formatCoordinateForDisplay(stop_lat).toFixed(2) + ''.padStart(10)} ${formatCoordinateForDisplay(stop_lon) + ''.padStart(10)}`,
+      `${(inc + '').padStart(2)}. ${stop_name?.padEnd(35)} ${stop_id?.padStart(15)}`,
     );
 
     inc = inc + 1;
