@@ -1,11 +1,5 @@
 import { it, describe, beforeEach, afterEach, expect, vi } from 'vitest';
-import {
-  calculateSecondsFromMidnight,
-  convertServiceTimeToClockTime,
-  getCurrentDate,
-  getServiceDate,
-  getServiceTime,
-} from './time-utils.js';
+import { getServiceDate, getServiceTime } from './time-utils.js';
 
 describe('time-utils', () => {
   beforeEach(() => {
@@ -16,34 +10,14 @@ describe('time-utils', () => {
     vi.useRealTimers();
   });
 
-  it('getCurrentDate should return the current date in the correct format', () => {
+  it('getServiceTime should return a service time using the current clock time if no time is provided', () => {
     // Mock fake system date to specific date for testing
-    const date = new Date(2025, 0, 1); // FYI: month index starts at 0
-    vi.setSystemTime(date);
+    const time = new Date(2025, 0, 2, 3, 24, 0);
+    vi.setSystemTime(time);
 
-    const currentDate = getCurrentDate();
+    const currentServiceTime = getServiceTime();
 
-    expect(currentDate).toBe(20250101);
-  });
-
-  it('getServiceDate should return a service date that corresponds to the CURRENT days date if the current time is between `05:00:00` – `23:00:00`', () => {
-    // Mock fake system date to specific date for testing
-    const date = new Date(2025, 0, 2, 10, 24, 0);
-    vi.setSystemTime(date);
-
-    const currentDate = getServiceDate();
-
-    expect(currentDate).toBe(20250102);
-  });
-
-  it('getServiceDate should return a service date that corresponds to the PREVIOUS days date if the current time is between `00:00:00` – `04:00:00`', () => {
-    // Mock fake system date to specific date for testing
-    const date = new Date(2025, 0, 2, 3, 24, 0);
-    vi.setSystemTime(date);
-
-    const currentDate = getServiceDate();
-
-    expect(currentDate).toBe(20250101);
+    expect(currentServiceTime).toBe('27:24:00');
   });
 
   it('getServiceTime should return a service time normalized to service days if the current time is between `00:00:00` – `04:59:59`', () => {
@@ -76,23 +50,23 @@ describe('time-utils', () => {
     expect(currentServiceTime).toBe('10:24:00');
   });
 
-  it('convertServiceTimeToClockTime correctly convert service time into clock time', () => {
+  it('getServiceDate should return a service date that corresponds to the CURRENT days date if the current time is between `05:00:00` – `23:00:00`', () => {
     // Mock fake system date to specific date for testing
-    const someServiceTime = '24:01:01';
-    expect(convertServiceTimeToClockTime(someServiceTime)).toBe('00:01:01');
-    expect(convertServiceTimeToClockTime('06:15:31')).toBe('06:15:31');
+    const date = new Date(2025, 0, 2, 10, 24, 0);
+    vi.setSystemTime(date);
+
+    const currentDate = getServiceDate();
+
+    expect(currentDate).toBe(20250102);
   });
 
-  it('calculateSecondsFromMidnight correctly converts HH:MM:SS timestamp into seconds since midnight', () => {
-    const eightAm = '08:00:00';
-    const eightAmInSecondsFromMidnight = calculateSecondsFromMidnight(eightAm);
+  it('getServiceDate should return a service date that corresponds to the PREVIOUS days date if the current time is between `00:00:00` – `04:00:00`', () => {
+    // Mock fake system date to specific date for testing
+    const date = new Date(2025, 0, 2, 3, 24, 0);
+    vi.setSystemTime(date);
 
-    expect(eightAmInSecondsFromMidnight).toBe(28800);
-  });
-  it('calculateSecondsFromMidnight correctly converts HH:MM:SS timestamp into seconds since midnight', () => {
-    const eightAm = '0800:00';
-    const eightAmInSecondsFromMidnight = calculateSecondsFromMidnight(eightAm);
+    const currentDate = getServiceDate();
 
-    expect(eightAmInSecondsFromMidnight).toBe(null);
+    expect(currentDate).toBe(20250101);
   });
 });

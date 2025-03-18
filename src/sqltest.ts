@@ -1,7 +1,7 @@
 import { closeDb } from 'gtfs';
 import { loadDb } from './db.js';
-import { getServiceDate, getServiceTime } from './lib/new-time-utils.js';
-import { getTransitStations } from './lib/getTransitStations.js';
+import { getServiceDate, getServiceTime } from './lib/time-utils.js';
+import { getTransitStations } from './lib/stop-utils.js';
 import { getConfig } from './lib/utils.js';
 import { Config } from './types/global.js';
 import { Database } from 'better-sqlite3';

@@ -5,7 +5,7 @@ import {
   convertServiceTimeToClockTime,
   getCurrentDate,
 } from './lib/time-utils.js';
-import { getServiceDate, getServiceTime } from './lib/new-time-utils.js';
+import { getServiceDate, getServiceTime } from './lib/time-utils.js';
 
 const VERBOSE_MODE = true;
 
