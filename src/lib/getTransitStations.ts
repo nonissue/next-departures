@@ -4,6 +4,8 @@ export interface Stop {
   stop_id: string;
   stop_name: string;
   parent_station?: string;
+  stop_lat: number;
+  stop_lon: number;
   // other stop properties...
 }
 
@@ -15,19 +17,15 @@ export interface Stop {
  * @returns Promise<Stop[]> - an array of stop objects representing transit stations.
  */
 export const getTransitStations = async (db: Database): Promise<Stop[]> => {
-  const queryResults = db
-    .prepare(
-      `
-      SELECT *
-      FROM stops
-      WHERE stop_id IN (
-        SELECT DISTINCT parent_station
-        FROM stops
-        WHERE parent_station IS NOT NULL
-      )
-    `,
-    )
-    .all();
+  const stations = `
+    SELECT *
+    FROM stops
+    WHERE location_type = 1
+    ORDER BY stops.stop_name;
+  `;
+
+  let queryToRun = stations;
+  const queryResults = db.prepare(queryToRun).all();
 
   return queryResults as Stop[];
 };
