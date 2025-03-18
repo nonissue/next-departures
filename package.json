@@ -1,21 +1,25 @@
 {
-  "name": "next-departures",
-  "author": "Andy andy@nonissue.org",
-  "type": "module",
-  "main": "./dist/index.js",
-  "devDependencies": {
-    "@types/better-sqlite3": "^7.6.12",
-    "@types/node": "^22.13.9",
-    "@vitest/coverage-v8": "^3.0.7",
-    "prettier": "^3.5.3",
-    "typescript": "^5.8.2",
-    "vitest": "^3.0.7"
-  },
-  "prettier": {
-    "singleQuote": true,
-    "semi": true
-  },
-  "dependencies": {
-    "gtfs": "^4.15.15"
-  }
+    "name": "next-departures",
+    "author": "Andy andy@nonissue.org",
+    "type": "module",
+    "main": "./dist/index.js",
+    "devDependencies": {
+        "@types/better-sqlite3": "^7.6.12",
+        "@types/node": "^22.13.9",
+        "@vitest/coverage-v8": "^3.0.7",
+        "prettier": "^3.5.3",
+        "typescript": "^5.8.2",
+        "vitest": "^3.0.7"
+    },
+    "dependencies": {
+        "gtfs": "^4.15.15"
+    },
+    "scripts": {
+        "clean": "rimraf dist",
+        "build": "tsc",
+        "start": "node dist/index.js",
+        "watch": "tsc --watch",
+        "test": "vitest",
+        "test:coverage": "vitest run --coverage"
+    }
 }
