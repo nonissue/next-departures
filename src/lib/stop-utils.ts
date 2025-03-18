@@ -1,6 +1,7 @@
 import { Database } from 'better-sqlite3';
 import { getStops, Stop } from 'gtfs';
 import { GeoCoordinate } from '../types/global.js';
+import { STATION_SEARCH_BOUNDING_BOX_AREA } from '../config.js';
 
 /**
  * Retrieves all transit stations from the GTFS stops table.
@@ -24,9 +25,8 @@ export const getTransitStations = (db: Database): Stop[] => {
 };
 
 /**
- * Retrieves all transit stations from the GTFS stops table.
- * A transit station is defined as any stop that is referenced as a parent_station
- * by at least one other stop.
+ * Retrieves closest "station" from GTFS stops.
+ * A "station" is a stop with `location_type=1`
  *
  * @returns Promise<Stop[]> - an array of stop objects representing transit stations.
  */
@@ -40,7 +40,7 @@ export const getClosestStation = ({ lat, lon }: GeoCoordinate = {}): Stop => {
     [],
     [],
     {
-      bounding_box_side_m: 5000,
+      bounding_box_side_m: STATION_SEARCH_BOUNDING_BOX_AREA,
     },
   );
 
@@ -53,19 +53,5 @@ export const getStopsForParentStation = (parent_station_id: string): Stop[] => {
     location_type: 0,
   });
 
-  return platforms;
+  return [...platforms];
 };
-
-// const main = async () => {
-//   const config: Config = await getConfig();
-
-//   const db = await loadDb(config);
-
-//   const closestStation = await getClosestStation(TEST_COORDS);
-//   const closestStops = await getStopsForParentStation(closestStation.stop_id);
-//   console.log(closestStops);
-
-//   closeDb(db);
-// };
-
-// await main();
