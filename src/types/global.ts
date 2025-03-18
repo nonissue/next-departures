@@ -67,3 +67,8 @@ export interface StopDepartures {
   departure_timestamp: number;
   service_id: string;
 }
+
+export interface GeoCoordinate {
+  lat?: number;
+  lon?: number;
+}
