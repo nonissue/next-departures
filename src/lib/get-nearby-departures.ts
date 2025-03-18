@@ -1,5 +1,5 @@
 import { closeDb } from 'gtfs';
-import { loadDb } from '../db.js';
+import { loadDb } from './db-utils.js';
 import { Config } from '../types/global.js';
 import { TEST_COORDS } from './constants.js';
 import { getClosestStation, getStopsForParentStation } from './stop-utils.js';
