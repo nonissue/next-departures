@@ -4,7 +4,7 @@ import { Config } from '../types/global.js';
 import { TEST_COORDS } from './constants.js';
 import { getClosestStation, getStopsForParentStation } from './stop-utils.js';
 import { getConfig, printDepartures } from './utils.js';
-import { getDeparturesForStop } from '../getDeparturesForStop.js';
+import { getDeparturesForStop } from './get-departures-for-stop.js';
 
 export const getNearbyDepartures = async () => {
   const config: Config = await getConfig();

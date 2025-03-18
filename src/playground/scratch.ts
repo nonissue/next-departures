@@ -2,7 +2,7 @@ import { closeDb } from 'gtfs';
 import { getConfig } from '../lib/utils.js';
 import { importGtfsDataToDb, loadDb } from '../db.js';
 import { Config } from '../types/global.js';
-import { getDeparturesForStop } from '../getDeparturesForStop.js';
+import { getDeparturesForStop } from '../lib/get-departures-for-stop.js';
 
 const runGetDeparturesForStop = async () => {
   const config: Config = await getConfig();
