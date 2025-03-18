@@ -1,6 +1,8 @@
 import { readFile } from 'fs/promises';
 import path from 'node:path';
-import { Config } from '../types/global.js';
+import { Config, StopDepartures } from '../types/global.js';
+import { StopTime } from 'gtfs';
+import { convertServiceTimeToClockTime } from './time-utils.js';
 
 /**
  * Validates the configuration object for GTFS import
@@ -58,3 +60,17 @@ export function padLeadingZeros(time: string) {
 
   return split.join(':');
 }
+
+export const printDepartures = (departures: StopDepartures[][]) => {
+  let inc = 1;
+  departures.forEach((departuresDirection: any) => {
+    console.log('\nDirection ' + inc);
+    departuresDirection.forEach((departureTimes: StopTime) => {
+      const { stop_headsign, departure_time, trip_id } = departureTimes;
+      console.log(
+        `${stop_headsign?.padEnd(25)} ${convertServiceTimeToClockTime(departure_time as string)?.padStart(20)} ${trip_id?.padStart(15)}`,
+      );
+    });
+    inc = inc + 1;
+  });
+};
