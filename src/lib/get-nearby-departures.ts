@@ -5,35 +5,39 @@ import { TEST_COORDS } from './constants.js';
 import { getClosestStation, getStopsForParentStation } from './stop-utils.js';
 import { getConfig, printDepartures } from './utils.js';
 import { getDeparturesForStop } from './get-departures-for-stop.js';
+import { log } from 'console';
 
 export const getNearbyDepartures = async () => {
-  const config: Config = await getConfig();
+    const currentTime = new Date();
+    const config: Config = await getConfig();
+    const db = await loadDb(config);
 
-  const db = await loadDb(config);
+    console.log(`DEV MODE  | ${currentTime}`);
 
-  console.log('WARNING: GPS OORDS HARDCODED FOR DEV');
-  const closestStation = await getClosestStation(TEST_COORDS);
-  console.log(`Closest station is: ${closestStation.stop_name}`);
+    console.log('WARNING: GPS OORDS HARDCODED FOR DEV');
+    const closestStation = await getClosestStation(TEST_COORDS);
+    console.log(`Closest station is: ${closestStation.stop_name}`);
 
-  const [platformA, platformB] = await getStopsForParentStation(
-    closestStation.stop_id,
-  );
+    const [platformA, platformB] = await getStopsForParentStation(
+        closestStation.stop_id
+    );
 
-  const departuresA = (await getDeparturesForStop(platformA.stop_id)).slice(
-    0,
-    5,
-  );
-  const departuresB = (await getDeparturesForStop(platformB.stop_id)).slice(
-    0,
-    5,
-  );
+    const departuresA = (await getDeparturesForStop(platformA.stop_id)).slice(
+        0,
+        5
+    );
+    const departuresB = (await getDeparturesForStop(platformB.stop_id)).slice(
+        0,
+        5
+    );
 
-  closeDb(db);
+    closeDb(db);
 
-  const result = [[...departuresA], [...departuresB]];
+    const result = [[...departuresA], [...departuresB]];
 
-  return result;
+    return result;
 };
 
 const test = await getNearbyDepartures();
-printDepartures(test);
+console.log(test);
+// printDepartures(test);
