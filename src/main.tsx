@@ -1,7 +1,8 @@
 // src/main.tsx
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './style.css';
+import { convertServiceTimeToClockTime } from './lib/time-utils';
 
 interface Departure {
     stop_id: string;
@@ -114,7 +115,10 @@ const App = () => {
                                             className="grid grid-cols-3 gap-2 px-4 py-3 text-sm sm:text-base transition-all duration-150 ease-in-out hover:bg-gray-900 hover:cursor-pointer hover:text-black"
                                         >
                                             <div className="font-mono font-light my-auto  text-orange-100 tracking-wide">
-                                                {dep.departure_time}
+                                                {/* {dep.departure_time} */}
+                                                {convertServiceTimeToClockTime(
+                                                    dep.departure_time
+                                                )}
                                             </div>
                                             <div className="col-span-2 font-normal uppercase text-orange-100 tracking-wide">
                                                 {dep.stop_headsign}
