@@ -1,6 +1,6 @@
 import { closeDb } from 'gtfs';
 import { loadDb } from './db-utils.js';
-import { Config, GeoCoordinate } from '@/types/global.js';
+import { Config, GeoCoordinate } from '@/types/global';
 import { TEST_COORDS } from './constants.js';
 import { getClosestStation, getStopsForParentStation } from './stop-utils.js';
 import { getConfig } from './utils.js';
