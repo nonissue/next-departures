@@ -1,22 +1,29 @@
 import { closeDb } from 'gtfs';
 import { loadDb } from './db-utils.js';
-import { Config } from '../types/global.js';
+import { Config, GeoCoordinate } from '@/types/global.js';
 import { TEST_COORDS } from './constants.js';
 import { getClosestStation, getStopsForParentStation } from './stop-utils.js';
 import { getConfig, printDepartures } from './utils.js';
 import { getDeparturesForStop } from './get-departures-for-stop.js';
-import { log } from 'console';
 
-export const getNearbyDepartures = async () => {
+export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
     const currentTime = new Date();
     const config: Config = await getConfig();
     const db = await loadDb(config);
 
     console.log(`DEV MODE  | ${currentTime}`);
 
-    console.log('WARNING: GPS OORDS HARDCODED FOR DEV');
-    const closestStation = await getClosestStation(TEST_COORDS);
-    console.log(`Closest station is: ${closestStation.stop_name}`);
+    let closestStation;
+
+    if (!lat || !lon) {
+        console.log('WARNING: GPS OORDS HARDCODED FOR DEV');
+        closestStation = await getClosestStation(TEST_COORDS);
+    } else {
+        console.log('NOTE: using provided LAT/LON');
+        closestStation = await getClosestStation({ lat, lon });
+    }
+
+    // console.log(`Closest station is: ${closestStation.stop_name}`);
 
     const [platformA, platformB] = await getStopsForParentStation(
         closestStation.stop_id
@@ -33,11 +40,16 @@ export const getNearbyDepartures = async () => {
 
     closeDb(db);
 
-    const result = [[...departuresA], [...departuresB]];
+    const result = {
+        closestStation: closestStation,
+        departures: [[...departuresA], [...departuresB]],
+    };
+
+    // const result = [[...departuresA], [...departuresB]];
 
     return result;
 };
 
-const test = await getNearbyDepartures();
-console.log(test);
+// const test = await getNearbyDepartures();
+// console.log(test);
 // printDepartures(test);

@@ -16,9 +16,10 @@ export const getNearestStation = async ({
     lon,
 }: GeoCoordinate = {}): Promise<Stop> => {
     const currentTime = new Date();
-    const config: Config = await getConfig();
+    // const config: Config = await getConfig();
 
-    const db = await loadDb(config);
+    // const db = await loadDb(config);
+
     const nearbyStations = getStops(
         {
             location_type: 1,
@@ -35,5 +36,5 @@ export const getNearestStation = async ({
     return nearbyStations[0];
 };
 
-const testStation = await getNearestStation(TEST_COORDS);
-console.log(testStation);
+// const testStation = await getNearestStation(TEST_COORDS);
+// console.log(testStation);
