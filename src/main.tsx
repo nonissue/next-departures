@@ -57,10 +57,10 @@ const App = () => {
     }, []);
 
     return (
-        <main className="min-h-screen flex flex-col items-center justify-start px-4 py-10 bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white font-mono">
+        <main className="min-h-screen flex flex-col items-center justify-start px-4 py-10 bg-gradient-to-br from-slate-900 via-slate-950 to-blue-950 text-white font-mono">
             <div className="w-full max-w-xl animate-fade-in">
                 <h1 className="text-4xl text-center font-bold tracking-widest text-yellow-400 mb-6">
-                    Next Departures
+                    Departures Board
                 </h1>
 
                 {status && (
@@ -70,29 +70,30 @@ const App = () => {
                 )}
 
                 {stationName && (
-                    <div className="flex flex-col align-middle gap-y-3">
-                        <div className="px-3 py-0.5 rounded-full uppercase text-center text-xs m-auto text-gray-400 bg-slate-700">
+                    <div className="flex flex-col items-center gap-y-3 mb-4">
+                        <span className="relative inline-flex items-center px-3 py-1 text-xs font-medium text-yellow-100 bg-yellow-600 rounded-full shadow shadow-yellow-900 uppercase tracking-widest animate-pulse">
                             Closest Station
-                        </div>
-                        <div className="text-center text-4xl font-sans font-semibold text-white">
+                        </span>
+                        <div className="text-3xl sm:text-4xl font-bold tracking-wider text-white drop-shadow-lg">
                             {stationName.toUpperCase()}
                         </div>
-                        {lastUpdated && (
-                            <div className="text-center text-xs text-gray-400 mb-6">
-                                Updated at {lastUpdated.toLocaleTimeString()}{' '}
-                                <button
-                                    onClick={getUserLocationAndFetch}
-                                    className="ml-2 px-2 py-1 border border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black transition"
-                                >
-                                    Refresh
-                                </button>
-                            </div>
-                        )}
+                    </div>
+                )}
+
+                {lastUpdated && (
+                    <div className="text-center text-xs text-gray-400 mb-6">
+                        Updated at {lastUpdated.toLocaleTimeString()}{' '}
+                        <button
+                            onClick={getUserLocationAndFetch}
+                            className="ml-2 px-2 py-1 border border-yellow-400 text-yellow-300 rounded hover:bg-yellow-400 hover:text-black transition"
+                        >
+                            Refresh
+                        </button>
                     </div>
                 )}
 
                 {loading ? (
-                    <div className="w-full divide-y divide-yellow-300 border border-yellow-500 rounded shadow overflow-hidden animate-pulse p-6 space-y-4">
+                    <div className="w-full divide-y divide-yellow-300 border border-yellow-500 rounded shadow-lg overflow-hidden animate-pulse p-6 space-y-4">
                         {[...Array(5)].map((_, i) => (
                             <div key={i} className="flex justify-between">
                                 <div className="h-4 bg-gray-700 w-24 rounded" />
@@ -105,9 +106,9 @@ const App = () => {
                         {departures.map((group, idx) => (
                             <div
                                 key={idx}
-                                className="border border-yellow-500 rounded-lg overflow-hidden shadow-xl"
+                                className="border border-yellow-500 rounded-sm overflow-hidden shadow-xl"
                             >
-                                <div className="bg-yellow-500 text-black px-4 py-2 font-bold text-sm uppercase tracking-wider">
+                                <div className="bg-yellow-500 text-black px-4 py-2 font-bold text-sm uppercase tracking-wider shadow-inner">
                                     Platform {idx + 1}
                                 </div>
                                 <div className="bg-black text-yellow-300 divide-y divide-yellow-700">
@@ -120,12 +121,12 @@ const App = () => {
                                     {group.map((dep, i) => (
                                         <div
                                             key={`${idx}-${i}`}
-                                            className="grid grid-cols-3 gap-2 px-4 py-2 text-sm sm:text-base hover:bg-gray-900 hover:text-black transition"
+                                            className="grid grid-cols-3 gap-2 px-4 py-2 text-sm sm:text-base transition-all duration-150 ease-in-out hover:bg-yellow-100 hover:text-black"
                                         >
-                                            <div className="font-mono text-yellow-200">
+                                            <div className="font-mono text-yellow-200 tracking-wider">
                                                 {dep.departure_time}
                                             </div>
-                                            <div className="col-span-2 uppercase text-yellow-100">
+                                            <div className="col-span-2 uppercase text-yellow-100 tracking-wide">
                                                 {dep.stop_headsign}
                                             </div>
                                         </div>

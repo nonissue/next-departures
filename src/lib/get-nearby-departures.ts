@@ -3,7 +3,7 @@ import { loadDb } from './db-utils.js';
 import { Config, GeoCoordinate } from '@/types/global.js';
 import { TEST_COORDS } from './constants.js';
 import { getClosestStation, getStopsForParentStation } from './stop-utils.js';
-import { getConfig, printDepartures } from './utils.js';
+import { getConfig } from './utils.js';
 import { getDeparturesForStop } from './get-departures-for-stop.js';
 
 export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
