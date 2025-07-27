@@ -1,7 +1,7 @@
 import { it, describe, beforeEach, afterEach, expect, vi } from 'vitest';
 import { validateConfigForImport } from '@/lib/file-utils';
 
-describe('time-utils', () => {
+describe('file-utils', () => {
     beforeEach(() => {});
 
     afterEach(() => {});
