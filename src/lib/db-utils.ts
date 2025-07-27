@@ -1,6 +1,6 @@
 import { importGtfs, openDb } from 'gtfs';
-import { validateConfigForImport } from './utils.js';
-import { Config } from '../types/global.js';
+import { validateConfigForImport } from '@/lib/file-utils';
+import { Config } from '@/types/global';
 
 export const loadDb = async (config: Config) => {
   // const config = await fetchConfig();

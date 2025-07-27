@@ -1,10 +1,13 @@
 import { closeDb } from 'gtfs';
-import { loadDb } from './db-utils.js';
+import { loadDb } from '@/lib/db-utils';
 import { Config, GeoCoordinate } from '@/types/global';
-import { TEST_COORDS } from './constants.js';
-import { getClosestStation, getStopsForParentStation } from './stop-utils.js';
-import { getConfig } from './utils.js';
-import { getDeparturesForStop } from './get-departures-for-stop.js';
+import { TEST_COORDS } from '@/lib/constants';
+import {
+    getClosestStation,
+    getStopsForParentStation,
+    getDeparturesForStop,
+} from '@/lib/stop-utils';
+import { getConfig } from '@/lib/file-utils';
 
 export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
     const currentTime = new Date();

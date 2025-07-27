@@ -1,7 +1,8 @@
 import { Database } from 'better-sqlite3';
-import { getStops, Stop } from 'gtfs';
-import { GeoCoordinate } from '../types/global.js';
-import { STATION_SEARCH_BOUNDING_BOX_AREA } from '../config.js';
+import { getStops, getStoptimes, Stop } from 'gtfs';
+import { GeoCoordinate, StopDepartures } from '@/types/global';
+import { STATION_SEARCH_BOUNDING_BOX_AREA } from '@/config';
+import { getServiceDate, getServiceTime } from '@/lib/time-utils';
 
 /**
  * Retrieves all transit stations from the GTFS stops table.

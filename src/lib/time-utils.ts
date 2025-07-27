@@ -1,6 +1,5 @@
-import { SERVICE_DAY_END_HOUR } from '../config';
-import { HOURS_IN_A_DAY, LAST_CLOCK_HOUR } from './constants';
-// import { padLeadingZeros } from './utils';
+import { SERVICE_DAY_END_HOUR } from '@/config';
+import { HOURS_IN_A_DAY, LAST_CLOCK_HOUR } from '@/lib/constants';
 
 interface ServiceDateOptions {
     calendarDate?: string;
