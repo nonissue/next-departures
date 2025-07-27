@@ -1,5 +1,9 @@
 import { it, describe, beforeEach, afterEach, expect, vi } from 'vitest';
+import {
+    getServiceDate,
+    getGtfsServiceTime,
     padTimeStamp,
+} from '@/lib/time-utils';
 
 describe('time-utils', () => {
     beforeEach(() => {
@@ -48,6 +52,26 @@ describe('time-utils', () => {
         const currentServiceTime = getGtfsServiceTime();
 
         expect(currentServiceTime).toBe('10:24:00');
+    });
+
+    it('getGtfsServiceTime should return a service time in the future if offSetInMinutes is provided', () => {
+        // Mock fake system date to specific date for testing
+        const time = new Date(2025, 0, 2, 23, 24, 0);
+        vi.setSystemTime(time);
+
+        const currentServiceTime = getGtfsServiceTime(undefined, 60);
+
+        expect(currentServiceTime).toBe('24:24:00');
+    });
+
+    it('getGtfsServiceTime should return a service time for a specific clock time if only targetTime is provided', () => {
+        const currentServiceTime = getGtfsServiceTime('01:00:00');
+        expect(currentServiceTime).toBe('25:00:00');
+    });
+
+    it('getGtfsServiceTime should return a service time X minutes later than the provided targetTime if offSetInMinutes and targetTime are provided', () => {
+        const currentServiceTime = getGtfsServiceTime('20:00:00', 60);
+        expect(currentServiceTime).toBe('21:00:00');
     });
 
     it('getServiceDate should return a service date that corresponds to the CURRENT days date if the current time is between `05:00:00` – `23:00:00`', () => {
