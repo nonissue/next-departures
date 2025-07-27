@@ -26,8 +26,6 @@ export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
         closestStation = await getClosestStation({ lat, lon });
     }
 
-    // console.log(`Closest station is: ${closestStation.stop_name}`);
-
     const [platformA, platformB] = await getStopsForParentStation(
         closestStation.stop_id
     );
@@ -48,11 +46,5 @@ export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
         departures: [[...departuresA], [...departuresB]],
     };
 
-    // const result = [[...departuresA], [...departuresB]];
-
     return result;
 };
-
-// const test = await getNearbyDepartures();
-// console.log(test);
-// printDepartures(test);

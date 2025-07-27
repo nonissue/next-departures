@@ -73,7 +73,7 @@ export const getServiceTime = (clockTime?: string): string => {
 export const convertServiceTimeToClockTime = (serviceTime: string) => {
     const [hours, minutes, seconds] = serviceTime.split(':').map(Number);
     const clockTime = `${hours > LAST_CLOCK_HOUR ? hours - HOURS_IN_A_DAY : hours}:${minutes}:${seconds}`;
-    return padLeadingZeros(clockTime);
+    return padTimeStamp(clockTime);
 };
 
 /**
@@ -81,13 +81,13 @@ export const convertServiceTimeToClockTime = (serviceTime: string) => {
  * @param time Time string in HH:mm:ss format
  * @returns Formatted time string with leading zeros, or null if invalid format
  */
-export function padLeadingZeros(time: string) {
+export function padTimeStamp(time: string) {
     const split = time
         .split(':')
         .map((d) => String(Number(d)).padStart(2, '0'));
     if (split.length !== 3) {
         throw new Error(
-            "padLeadingZeros: input must be a string in the form 'HH:MM:SS'"
+            "padTimeStamp: input must be a string in the form 'HH:MM:SS'"
         );
     }
 

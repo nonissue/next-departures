@@ -3,7 +3,6 @@ import { validateConfigForImport } from '@/lib/file-utils';
 import { Config } from '@/types/global';
 
 export const loadDb = async (config: Config) => {
-    // const config = await fetchConfig();
     validateConfigForImport(config);
 
     if (!config.sqlitePath) {
@@ -43,10 +42,6 @@ export const importGtfsDataToDb = async (config: Config) => {
     } catch (error: any) {
         throw new Error(error);
     }
-
-    // console.log(
-    //   `Starting GTFS import for ${config.agencies.length} agency(s) using SQLite database at ${config.sqlitePath}`,
-    // );
 
     try {
         await importGtfs({ agencies: config.agencies, db: db });
