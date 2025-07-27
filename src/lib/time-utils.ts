@@ -7,7 +7,6 @@ interface ServiceDateOptions {
     targetTime?: string;
 }
 
-
 export const getServiceDate = ({
     calendarDate,
     targetTime,
@@ -17,9 +16,9 @@ export const getServiceDate = ({
     const [hours] = timeStr.split(':').map(Number);
     const baseDate = calendarDate
         ? new Date(
-              Number(calendarDate.slice(0, 4)),
-              Number(calendarDate.slice(4, 6)) - 1,
-              Number(calendarDate.slice(6, 8))
+              Number(calendarDate.slice(0, 4)), // year
+              Number(calendarDate.slice(4, 6)) - 1, // monthIndex (starts at 0)
+              Number(calendarDate.slice(6, 8)) // day
           )
         : now;
 
