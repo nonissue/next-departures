@@ -63,8 +63,8 @@ const App = () => {
     }, []);
 
     return (
-        <main className="fixed sm:static min-h-screen flex flex-col items-center justify-start px-4 py-10 bg-gradient-to-l from-black via-black to-black text-white font-mono">
-            <div className="w-full px-4 sm:my-auto  max-w-xl animate-fade-in">
+        <main className="min-h-dvh overflow-y-auto overscroll-none sm:min-h-screen sm:overflow-visible sm:overscroll-auto w-full flex flex-col items-center justify-center px-4 sm:py-10 bg-gradient-to-l from-black via-black to-black text-white font-mono">
+            <div className="w-full px-4 sm:my-auto max-w-xl animate-fade-in">
                 {/* <h1 className="text-4xl text-center font-bold tracking-widest text-orange-400 mb-6">
                     Departures Board
                 </h1> */}
@@ -78,14 +78,14 @@ const App = () => {
                 <div className="px-2 sm:px-8">
                     {/* bg-radial-[at_25%_100%] from-amber-700/10 via-orange-500/10 to-zinc-700/20 to-200% */}
                     {/* <div className="border-2 border-b-0 border-dotted border-neutral-500/25 bg-radial-[at_50%_150%] from-neutral-900/50 to-neutral-400/10 rounded-t-sm  p-4 "> */}
-                    <div className="p-4 ">
+                    <div className="p-4">
                         {stationName && (
                             <div className="flex flex-col sm:gap-y-2 items-center justify-around">
-                                <span className="relative inline-flex text-orange-300 bg-gradient-to-r from-gray-700/0 via-slate-700/0 to-gray-800/0  uppercase tracking-widest">
+                                <span className="relative text-sm inline-flex text-orange-300 bg-gradient-to-r from-gray-700/0 via-slate-700/0 to-gray-800/0  uppercase tracking-widest">
                                     Closest Station:
                                 </span>
 
-                                <div className="text-2xl sm:text-4xl font-sans font-bold tracking-normal text-orange-200 drop-shadow-lg">
+                                <div className="text-2xl sm:text-2xl font-sans font-bold tracking-normal text-orange-200 drop-shadow-lg">
                                     {stationName.toUpperCase()}
                                 </div>
                             </div>
@@ -126,9 +126,9 @@ const App = () => {
                                     {group.map((dep, i) => (
                                         <div
                                             key={`${idx}-${i}`}
-                                            className="grid grid-cols-3 gap-2 px-4 py-2 sm:py-3 text-sm sm:text-base transition-all duration-150 ease-in-out hover:bg-zinc-900 hover:cursor-pointer hover:text-black"
+                                            className="grid grid-cols-3 gap-1 px-4 py-1 sm:py-2 text-sm sm:text-sm transition-all duration-150 ease-in-out hover:bg-zinc-900 hover:cursor-pointer hover:text-black"
                                         >
-                                            <div className="font-mono font-bold my-auto text-orange-100 tracking-wide">
+                                            <div className="font-mono my-auto text-orange-100 tracking-wide">
                                                 {convertServiceTimeToClockTime(
                                                     dep.departure_time
                                                 )}
@@ -154,7 +154,7 @@ const App = () => {
                             </span>
                             <button
                                 onClick={getUserLocationAndFetch}
-                                className="border-l-0 border-neutral-700 flex text-xs items-center px-4 gap-x-3 py-2 uppercase tracking-wide sm:text-lg   text-orange-300 bg-neutral-800  hover:bg-orange-500 hover:cursor-pointer hover:text-black transition"
+                                className="border-l-0 border-neutral-700 flex text-xs items-center px-4 gap-x-3 py-2 sm:py-3 uppercase tracking-wide sm:text-base   text-orange-300 bg-neutral-800  hover:bg-orange-500 hover:cursor-pointer hover:text-black transition"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
