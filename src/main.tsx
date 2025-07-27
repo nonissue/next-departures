@@ -103,44 +103,48 @@ const App = () => {
                     </div>
                 ) : (
                     <div className="space-y-0 border-2 border-orange-400/50 divide-orange-400/50 divide-y-2 bg-orange-100/10  ">
-                        {departures.map((group, idx) => (
-                            <div
-                                key={idx}
-                                className=" divide-y w-full  divide-dotted divide-orange-300/30 flex items-stretch"
-                            >
-                                {/* Label column */}
-                                <div className="flex flex-col justify-center items-center border-r w-8 border-solid border-b-0 border-zinc-800 relative">
-                                    <span className="rotate-[-90deg] font-light text-xs sm:text-md uppercase tracking-widest text-amber-100/90 whitespace-nowrap ">
-                                        Platform {idx + 1}
-                                    </span>
-                                </div>
-
-                                {/* Content column */}
-                                <div className="bg-zinc-950/70 text-orange-300 divide-y divide-orange-100/20 divide-dotted flex-1">
-                                    <div className="grid grid-cols-3 gap-2 px-4 py-2 text-xs sm:text-sm uppercase text-orange-300">
-                                        <span>Time</span>
-                                        <span className="col-span-2">
-                                            Destination
+                        {departures.map((group, idx) =>
+                            group.length == 0 ? (
+                                <></>
+                            ) : (
+                                <div
+                                    key={idx}
+                                    className=" divide-y w-full  divide-dotted divide-orange-300/30 flex items-stretch"
+                                >
+                                    {/* Label column */}
+                                    <div className="flex flex-col justify-center items-center border-r w-8 border-solid border-b-0 border-zinc-800 relative min-h-40">
+                                        <span className="rotate-[-90deg] font-light text-xs sm:text-md uppercase tracking-widest text-amber-100/90 whitespace-nowrap">
+                                            Platform {idx + 1}
                                         </span>
                                     </div>
-                                    {group.map((dep, i) => (
-                                        <div
-                                            key={`${idx}-${i}`}
-                                            className="grid grid-cols-3 gap-1 px-4 py-1 sm:py-2 text-sm sm:text-sm transition-all duration-150 ease-in-out hover:bg-zinc-900 hover:cursor-pointer hover:text-black"
-                                        >
-                                            <div className="font-mono my-auto text-orange-100 tracking-wide">
-                                                {convertServiceTimeToClockTime(
-                                                    dep.departure_time
-                                                )}
-                                            </div>
-                                            <div className="col-span-2 truncate font-normal uppercase text-orange-100 tracking-wide">
-                                                {dep.stop_headsign}
-                                            </div>
+
+                                    {/* Content column */}
+                                    <div className="bg-zinc-950/70 text-orange-300 divide-y divide-orange-100/20 divide-dotted flex-1">
+                                        <div className="grid grid-cols-3 gap-2 px-4 py-2 text-xs sm:text-sm uppercase text-orange-300">
+                                            <span>Time</span>
+                                            <span className="col-span-2">
+                                                Destination
+                                            </span>
                                         </div>
-                                    ))}
+                                        {group.map((dep, i) => (
+                                            <div
+                                                key={`${idx}-${i}`}
+                                                className="grid grid-cols-3 gap-1 px-4 py-1 sm:py-2 text-sm sm:text-sm transition-all duration-150 ease-in-out hover:bg-zinc-900 hover:cursor-pointer hover:text-black"
+                                            >
+                                                <div className="font-mono my-auto text-orange-100 tracking-wide">
+                                                    {convertServiceTimeToClockTime(
+                                                        dep.departure_time
+                                                    )}
+                                                </div>
+                                                <div className="col-span-2 truncate font-normal uppercase text-orange-100 tracking-wide">
+                                                    {dep.stop_headsign}
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            )
+                        )}
                     </div>
                 )}
                 <div className="px-0 sm:px-0">
