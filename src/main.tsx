@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './style.css';
-import { convertServiceTimeToClockTime } from './lib/time-utils';
+import { convertServiceTimeToClockTime } from '@/lib/time-utils';
 
 interface Departure {
     stop_id: string;
@@ -58,8 +58,8 @@ const App = () => {
     }, []);
 
     return (
-        <main className="min-h-screen flex flex-col items-center justify-start px-4 py-10 bg-gradient-to-l from-black via-black to-black text-white font-mono">
-            <div className="w-full max-w-xl animate-fade-in">
+        <main className="min-h-screen  flex flex-col items-center justify-start px-4 py-10 bg-gradient-to-l from-black via-black to-black text-white font-mono">
+            <div className="w-full sm:my-auto max-w-xl animate-fade-in">
                 {/* <h1 className="text-4xl text-center font-bold tracking-widest text-orange-400 mb-6">
                     Departures Board
                 </h1> */}
@@ -70,13 +70,14 @@ const App = () => {
                     </div>
                 )}
 
-                <div className="border-2 border-dotted border-orange-300/25 p-4  ">
+                <div className="border-2 border-dotted border-orange-300/25 p-4 rounded-t-xl  ">
                     {stationName && (
                         <div className="flex flex-col gap-y-2">
-                            <span className="relative inline-flex text-xs text-orange-300 bg-gradient-to-r from-gray-700/0 via-slate-700/0 to-gray-800/0 rounded-xs uppercase tracking-widest">
+                            <span className="relative inline-flex text-xs text-orange-300 bg-gradient-to-r from-gray-700/0 via-slate-700/0 to-gray-800/0  uppercase tracking-widest">
                                 Closest Station:
                             </span>
-                            <div className="text-xl sm:text-2xl font-bold tracking-wider text-orange-200 drop-shadow-lg">
+
+                            <div className="text-xl sm:text-xl font-bold tracking-wider text-orange-200 drop-shadow-lg">
                                 {stationName.toUpperCase()}
                             </div>
                         </div>
@@ -97,12 +98,17 @@ const App = () => {
                         {departures.map((group, idx) => (
                             <div
                                 key={idx}
-                                className="overflow-hidden divide-y divide-dotted divide-orange-300/30"
+                                className="divide-y w-full divide-dotted divide-orange-300/30 flex items-stretch"
                             >
-                                <div className=" text-orange-50 px-4 py-2 text-sm uppercase tracking-wider shadow-inner">
-                                    Platform {idx + 1}
+                                {/* Label column */}
+                                <div className="flex flex-col justify-end items-start bg-gray-950 border-r border-dashed border-b-0  border-gray-800 w-10 relative pt-4 pl-2">
+                                    <span className="rotate-[-90deg] origin-top-left font-bold text-md uppercase tracking-wider text-white whitespace-nowrap">
+                                        Platform {idx + 1}
+                                    </span>
                                 </div>
-                                <div className="bg-gray-950/70 text-orange-300 divide-y divide-orange-100/20 divide-dotted">
+
+                                {/* Content column */}
+                                <div className="bg-gray-950/70 text-orange-300 divide-y divide-orange-100/20 divide-dotted flex-1">
                                     <div className="grid grid-cols-3 gap-2 px-4 py-2 text-xs sm:text-sm uppercase text-orange-300">
                                         <span>Time</span>
                                         <span className="col-span-2">
@@ -114,8 +120,7 @@ const App = () => {
                                             key={`${idx}-${i}`}
                                             className="grid grid-cols-3 gap-2 px-4 py-3 text-sm sm:text-base transition-all duration-150 ease-in-out hover:bg-gray-900 hover:cursor-pointer hover:text-black"
                                         >
-                                            <div className="font-mono font-light my-auto  text-orange-100 tracking-wide">
-                                                {/* {dep.departure_time} */}
+                                            <div className="font-mono font-light my-auto text-orange-100 tracking-wide">
                                                 {convertServiceTimeToClockTime(
                                                     dep.departure_time
                                                 )}
