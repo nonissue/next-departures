@@ -72,3 +72,5 @@ export interface GeoCoordinate {
   lat?: number;
   lon?: number;
 }
+export type ClockTime = `${number}:${number}:${number}`;
+export type ServiceTime = `${number}:${string}:${string}`;
