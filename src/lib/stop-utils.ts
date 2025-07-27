@@ -66,6 +66,7 @@ export const getStopsForParentStation = (parent_station_id: string): Stop[] => {
  * @param stopId - string - `node-gtfs` docs type this as string
  * @param targetTime - string (optional) - timestamp to run query at specific time rather than defaulting to current time
  * @param tripLookaheadIntervalMins - number - not implemented yet
+ * @param stopCount - number (optional, has default CONSTANT) - limits the number of departures we return for the provided stop
  * @throws Error if stopId isn't provided
  * @returns Array of Stoptimes[] containn objects for each matching upcoming departures for specified stop at current time (or at targetTime, if provided)
  */
