@@ -2,7 +2,7 @@ import { Database } from 'better-sqlite3';
 import { getStops, getStoptimes, Stop } from 'gtfs';
 import { ClockTime, GeoCoordinate, StopDepartures } from '@/types/global';
 import { STATION_SEARCH_BOUNDING_BOX_AREA } from '@/config';
-import { getServiceDate, getServiceTime } from '@/lib/time-utils';
+import { getServiceDate, getGtfsServiceTime } from '@/lib/time-utils';
 
 /**
  * Retrieves all transit stations from the GTFS stops table.
@@ -74,8 +74,8 @@ export const getDeparturesForStop = async (
     if (!stopId) throw new Error('stopId is required');
 
     const [currentServiceDate, currentServiceTime] = targetTime
-        ? [getServiceDate({ targetTime }), getServiceTime(targetTime)]
-        : [getServiceDate(), getServiceTime()];
+        ? [getServiceDate({ targetTime }), getGtfsServiceTime(targetTime)]
+        : [getServiceDate(), getGtfsServiceTime()];
 
     const departures = getStoptimes(
         {
