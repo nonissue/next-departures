@@ -84,6 +84,7 @@ export const getDeparturesForStop = async (
             start_time: currentServiceTime,
             // start_time: "20:00:00",
             // ..(endTime ? { end_time: endTime } : {})  // include end_time if defined
+            end_time: getGtfsServiceTime(undefined, tripLookaheadIntervalMins),
         },
         [
             'stop_id',
