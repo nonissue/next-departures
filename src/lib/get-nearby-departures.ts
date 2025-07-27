@@ -30,14 +30,10 @@ export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
         closestStation.stop_id
     );
 
-    const departuresA = (await getDeparturesForStop(platformA.stop_id)).slice(
-        0,
-        5
-    );
-    const departuresB = (await getDeparturesForStop(platformB.stop_id)).slice(
-        0,
-        5
-    );
+    const [departuresA, departuresB] = await Promise.all([
+        getDeparturesForStop(platformA.stop_id),
+        getDeparturesForStop(platformB.stop_id),
+    ]);
 
     closeDb(db);
 
