@@ -1,6 +1,6 @@
 import { Database } from 'better-sqlite3';
 import { getStops, getStoptimes, Stop } from 'gtfs';
-import { GeoCoordinate, StopDepartures } from '@/types/global';
+import { ClockTime, GeoCoordinate, StopDepartures } from '@/types/global';
 import { STATION_SEARCH_BOUNDING_BOX_AREA } from '@/config';
 import { getServiceDate, getServiceTime } from '@/lib/time-utils';
 
@@ -67,6 +67,7 @@ export const getStopsForParentStation = (parent_station_id: string): Stop[] => {
  */
 export const getDeparturesForStop = async (
     stopId: string,
+    targetTime?: ClockTime,
     stopCount: number = 6
 ): Promise<StopDepartures[]> => {
     if (!stopId) throw new Error('stopId is required');
