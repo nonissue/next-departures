@@ -61,24 +61,36 @@ export const getServiceDate = ({
  */
 export const getGtfsServiceTime = (
     clockTime?: ClockTime,
-    offSetInMinutes?: number
+    offsetInMinutes?: number
 ): ServiceTime => {
-    let now: Date;
+    // 1. Build a Date that represents the *base* time today
+    const base = (() => {
+        if (clockTime) {
+            const [hh, mm, ss] = clockTime.split(':').map(Number);
+            const d = new Date(); // today
+            d.setHours(hh, mm, ss, 0);
+            return d;
+        }
+        return new Date(); // now
+    })();
 
-    if (offSetInMinutes) {
-        now = new Date(Date.now() + offSetInMinutes * 60 * 1000);
-    } else {
-        now = new Date();
+    // 2. Apply the offset, if any
+    if (offsetInMinutes && offsetInMinutes !== 0) {
+        base.setMinutes(base.getMinutes() + offsetInMinutes);
     }
 
-    // Use provided time or default to current time (HH:mm:ss)
-    const timeString = clockTime ?? now.toTimeString().slice(0, 8);
-    const [hours, minutes, seconds] = timeString.split(':').map(Number);
+    // 3. Convert to service‑day HH:mm:ss
+    const hours = base.getHours();
+    const minutes = base.getMinutes();
+    const seconds = base.getSeconds();
 
-    // Convert to GTFS service time
     const serviceHours = hours < SERVICE_DAY_END_HOUR ? hours + 24 : hours;
 
-    return `${serviceHours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    const hh = String(serviceHours).padStart(2, '0');
+    const mm = String(minutes).padStart(2, '0');
+    const ss = String(seconds).padStart(2, '0');
+
+    return `${hh}:${mm}:${ss}` as ServiceTime;
 };
 
 /**
