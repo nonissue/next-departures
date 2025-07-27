@@ -82,6 +82,8 @@ export const getDeparturesForStop = async (
             stop_id: stopId,
             date: currentServiceDate,
             start_time: currentServiceTime,
+            // start_time: "20:00:00",
+            // ..(endTime ? { end_time: endTime } : {})  // include end_time if defined
         },
         [
             'stop_id',
