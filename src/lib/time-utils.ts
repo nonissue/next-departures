@@ -1,5 +1,6 @@
 import { SERVICE_DAY_END_HOUR } from '@/config';
 import { HOURS_IN_A_DAY, LAST_CLOCK_HOUR } from '@/lib/constants';
+import { ClockTime, ServiceTime } from '@/types/global';
 
 interface ServiceDateOptions {
     calendarDate?: string;
@@ -51,8 +52,24 @@ export const getServiceDate = ({
     );
 };
 
-export const getServiceTime = (clockTime?: string): string => {
-    const now = new Date();
+/**
+ * getGtfsServiceTime
+ * @param clockTime - ClockTime (optional) - a string in format "HH:MM:SS" that represents the 24 clock time to convert into service time
+ * @param offSetInMinutes - number, optional - a number representing how many minutes should be added to returned service time
+ * @throws Error if stopId isn't provided
+ * @returns string - a string in the format "HH:MM:SS" representing a time in the current service day (eg. more than 24 hours)
+ */
+export const getGtfsServiceTime = (
+    clockTime?: ClockTime,
+    offSetInMinutes?: number
+): ServiceTime => {
+    let now: Date;
+
+    if (offSetInMinutes) {
+        now = new Date(Date.now() + offSetInMinutes * 60 * 1000);
+    } else {
+        now = new Date();
+    }
 
     // Use provided time or default to current time (HH:mm:ss)
     const timeString = clockTime ?? now.toTimeString().slice(0, 8);
