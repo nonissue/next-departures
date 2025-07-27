@@ -1,5 +1,5 @@
 import { it, describe, beforeEach, afterEach, expect, vi } from 'vitest';
-import { getServiceDate, getGtfsServiceTime } from './time-utils.js';
+    padTimeStamp,
 
 describe('time-utils', () => {
     beforeEach(() => {
@@ -68,5 +68,23 @@ describe('time-utils', () => {
         const currentDate = getServiceDate();
 
         expect(currentDate).toBe(20250101);
+    });
+});
+
+describe('padTimeStamp()', () => {
+    it('pads single‑digit components with leading zeros', () => {
+        expect(padTimeStamp('9:5:1')).toBe('09:05:01');
+        expect(padTimeStamp('7:05:9')).toBe('07:05:09');
+    });
+
+    it('leaves already‑padded times unchanged', () => {
+        expect(padTimeStamp('12:30:45')).toBe('12:30:45');
+    });
+
+    it('throws when the input is not in HH:mm:ss form', () => {
+        expect(() => padTimeStamp('12:30')).toThrow(
+            "padTimeStamp: input must be a string in the form 'HH:MM:SS'"
+        );
+        expect(() => padTimeStamp('12:30:45:99')).toThrow();
     });
 });
