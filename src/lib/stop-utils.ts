@@ -3,6 +3,10 @@ import { getStops, getStoptimes, Stop } from 'gtfs';
 import { ClockTime, GeoCoordinate, StopDepartures } from '@/types/global';
 import { STATION_SEARCH_BOUNDING_BOX_AREA } from '@/config';
 import { getServiceDate, getGtfsServiceTime } from '@/lib/time-utils';
+import {
+    DEFAULT_LOOK_AHEAD_IN_MINS,
+    DEFAULT_STOP_COUNT_LIMIT,
+} from '@/lib/constants';
 
 /**
  * Retrieves all transit stations from the GTFS stops table.
@@ -68,8 +72,8 @@ export const getStopsForParentStation = (parent_station_id: string): Stop[] => {
 export const getDeparturesForStop = async (
     stopId: string,
     targetTime?: ClockTime,
-    tripLookaheadIntervalMins: number = 120,
-    stopCount: number = 6
+    tripLookaheadIntervalMins: number = DEFAULT_LOOK_AHEAD_IN_MINS,
+    stopCount: number = DEFAULT_STOP_COUNT_LIMIT
 ): Promise<StopDepartures[]> => {
     if (!stopId) throw new Error('stopId is required');
 
@@ -94,7 +98,7 @@ export const getDeparturesForStop = async (
             stop_id: stopId,
             date: currentServiceDate,
             start_time: currentServiceTime,
-            // start_time: "20:00:00",
+            // start_time: '23:45:00',
             // ..(endTime ? { end_time: endTime } : {})  // include end_time if defined
             end_time: getGtfsServiceTime(undefined, tripLookaheadIntervalMins),
         },
