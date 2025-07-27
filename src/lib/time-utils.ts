@@ -3,10 +3,20 @@ import { HOURS_IN_A_DAY, LAST_CLOCK_HOUR } from '@/lib/constants';
 import { ClockTime, ServiceTime } from '@/types/global';
 
 interface ServiceDateOptions {
-    calendarDate?: string;
+    calendarDate?: string; // why the fuck is this a string, shouldnt it be a number?
     targetTime?: string;
 }
 
+/**
+ * getServiceDate()
+ * called with no params -> returns "service date" based on current time and current calendar date
+ * called with calendarDate -> returns "service date" based on provided calendarDate and current time
+ * called with targetTime -> returns "service date" based on current calendar date and provided time
+ * called with calendarDate and targetTime -> returns "service date" based on both provided parameters
+ * @param calendarDate - string - we accept a string representing the calendar date (string rather than number so we can slice it)
+ * @param targetTime - string (optional) - a string representing the target time eg "25:00:01"
+ * @returns number - a number representing the computed service date in the form YYYYMMDD -> 20250727
+ */
 export const getServiceDate = ({
     calendarDate,
     targetTime,
@@ -14,6 +24,10 @@ export const getServiceDate = ({
     const now = new Date();
     const timeStr = targetTime ?? now.toTimeString().slice(0, 8);
     const [hours] = timeStr.split(':').map(Number);
+
+    // calendarDate is a string, even though we return a number representing date
+    // this is so we can slice it / parse it easily. if we accepted a number we would
+    // just have to convert it to a string anyway
     const baseDate = calendarDate
         ? new Date(
               Number(calendarDate.slice(0, 4)), // year
@@ -85,8 +99,8 @@ export const getGtfsServiceTime = (
 
 /**
  * Todo
- * @param serviceTime string
- * @returns string
+ * @param serviceTime string - hh:mm:ss -> "25:00:01"
+ * @returns string - hh:mm:ss -> 00:00:01
  * taken from `node-gtfs`
  */
 export const convertServiceTimeToClockTime = (serviceTime: string) => {
