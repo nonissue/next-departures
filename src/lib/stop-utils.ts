@@ -77,6 +77,18 @@ export const getDeparturesForStop = async (
         ? [getServiceDate({ targetTime }), getGtfsServiceTime(targetTime)]
         : [getServiceDate(), getGtfsServiceTime()];
 
+    const DEBUG_MODE = false;
+    if (DEBUG_MODE) {
+        console.log(
+            'currentServiceTime from getDeparturesForStop: ' +
+                currentServiceTime
+        );
+        console.log(
+            'currentServiceTime with offset from getDeparturesForStop: ' +
+                getGtfsServiceTime(undefined, tripLookaheadIntervalMins)
+        );
+    }
+
     const departures = getStoptimes(
         {
             stop_id: stopId,
