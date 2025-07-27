@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './style.css';
 import { convertServiceTimeToClockTime } from '@/lib/time-utils';
+import { TEST_COORDS } from './lib/constants';
 
 interface Departure {
     stop_id: string;
@@ -47,9 +48,13 @@ const App = () => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const { latitude, longitude } = position.coords;
+
                 fetchDepartures(latitude, longitude);
             },
-            () => setStatus('Unable to retrieve your location.')
+            () => {
+                setStatus('Unable to retrieve your location.');
+                fetchDepartures(TEST_COORDS.lat, TEST_COORDS.lon);
+            }
         );
     };
 
@@ -58,8 +63,8 @@ const App = () => {
     }, []);
 
     return (
-        <main className="min-h-screen flex flex-col items-center justify-start px-4 py-10 bg-gradient-to-l from-black via-black to-black text-white font-mono">
-            <div className="w-full px-4 my-auto sm:my-auto max-w-xl animate-fade-in">
+        <main className="fixed sm:static min-h-screen flex flex-col items-center justify-start px-4 py-10 bg-gradient-to-l from-black via-black to-black text-white font-mono">
+            <div className="w-full px-4 sm:my-auto  max-w-xl animate-fade-in">
                 {/* <h1 className="text-4xl text-center font-bold tracking-widest text-orange-400 mb-6">
                     Departures Board
                 </h1> */}
@@ -75,7 +80,7 @@ const App = () => {
                     {/* <div className="border-2 border-b-0 border-dotted border-neutral-500/25 bg-radial-[at_50%_150%] from-neutral-900/50 to-neutral-400/10 rounded-t-sm  p-4 "> */}
                     <div className="p-4 ">
                         {stationName && (
-                            <div className="flex flex-col gap-y-2 items-center justify-around">
+                            <div className="flex flex-col sm:gap-y-2 items-center justify-around">
                                 <span className="relative inline-flex text-orange-300 bg-gradient-to-r from-gray-700/0 via-slate-700/0 to-gray-800/0  uppercase tracking-widest">
                                     Closest Station:
                                 </span>
@@ -104,8 +109,8 @@ const App = () => {
                                 className=" divide-y w-full  divide-dotted divide-orange-300/30 flex items-stretch"
                             >
                                 {/* Label column */}
-                                <div className="flex flex-col justify-end items-start border-r border-solid border-b-0  border-zinc-800 w-10 relative pt-4 pl-2">
-                                    <span className="rotate-[-90deg] origin-top-left pt-0.5 font-semibold text-md uppercase tracking-widest text-amber-100/90 whitespace-nowrap ">
+                                <div className="flex flex-col justify-center items-center border-r w-8 border-solid border-b-0 border-zinc-800 relative">
+                                    <span className="rotate-[-90deg] font-light text-xs sm:text-md uppercase tracking-widest text-amber-100/90 whitespace-nowrap ">
                                         Platform {idx + 1}
                                     </span>
                                 </div>
@@ -121,14 +126,14 @@ const App = () => {
                                     {group.map((dep, i) => (
                                         <div
                                             key={`${idx}-${i}`}
-                                            className="grid grid-cols-3 gap-2 px-4 py-3 text-sm sm:text-base transition-all duration-150 ease-in-out hover:bg-zinc-900 hover:cursor-pointer hover:text-black"
+                                            className="grid grid-cols-3 gap-2 px-4 py-2 sm:py-3 text-sm sm:text-base transition-all duration-150 ease-in-out hover:bg-zinc-900 hover:cursor-pointer hover:text-black"
                                         >
-                                            <div className="font-mono font-light my-auto text-orange-100 tracking-wide">
+                                            <div className="font-mono font-bold my-auto text-orange-100 tracking-wide">
                                                 {convertServiceTimeToClockTime(
                                                     dep.departure_time
                                                 )}
                                             </div>
-                                            <div className="col-span-2 font-normal uppercase text-orange-100 tracking-wide">
+                                            <div className="col-span-2 truncate font-normal uppercase text-orange-100 tracking-wide">
                                                 {dep.stop_headsign}
                                             </div>
                                         </div>
