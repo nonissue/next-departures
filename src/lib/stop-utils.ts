@@ -68,6 +68,7 @@ export const getStopsForParentStation = (parent_station_id: string): Stop[] => {
 export const getDeparturesForStop = async (
     stopId: string,
     targetTime?: ClockTime,
+    tripLookaheadIntervalMins: number = 120,
     stopCount: number = 6
 ): Promise<StopDepartures[]> => {
     if (!stopId) throw new Error('stopId is required');
