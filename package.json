@@ -4,11 +4,9 @@
     "type": "module",
     "main": "./dist/index.js",
     "scripts": {
-        "clean": "rimraf dist",
-        "build": "tsc",
-        "start": "node dist/index.js",
-        "dev": "tsx src/server.ts",
-        "watch": "tsc --watch",
+        "dev:server": "tsx watch src/server.ts",
+        "dev:client": "vite",
+        "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"",
         "test": "vitest",
         "test:coverage": "vitest run --coverage"
     },
