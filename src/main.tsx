@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './style.css';
 import { convertServiceTimeToClockTime } from '@/lib/time-utils';
-import { TEST_COORDS } from './lib/constants';
+import { TEST_COORDS } from '@/lib/constants';
 
 interface Departure {
     stop_id: string;
@@ -25,7 +25,7 @@ const App = () => {
             setLoading(true);
             setStatus('Finding nearest station...');
             const res = await fetch(
-                `/api/departures?lat=${latitude}&lon=${longitude}`
+                `/api/departures/nearby?lat=${latitude}&lon=${longitude}`
             );
             const data = await res.json();
             setStationName(data.closestStation.stop_name);

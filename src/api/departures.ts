@@ -1,12 +1,12 @@
 import { Hono } from 'hono';
 import { getNearbyDepartures } from '@/lib/get-nearby-departures';
 
-export const departures = new Hono();
+export const departures = new Hono().basePath('/departures');
 
 /**
- * GET /api/departures?lat=…&lon=…
+ * GET /api/departures/nearby?lat=…&lon=…
  */
-departures.get('/departures', async (c) => {
+departures.get('/nearby', async (c) => {
     const lat = parseFloat(c.req.query('lat') ?? '');
     const lon = parseFloat(c.req.query('lon') ?? '');
 
@@ -21,4 +21,9 @@ departures.get('/departures', async (c) => {
         console.error('Error in /api/departures:', err);
         return c.json({ error: 'Failed to fetch departures' }, 500);
     }
+});
+
+departures.get('/:stopId', async (c) => {
+    const stopId = c.req.param('stopId');
+    return c.json(stopId);
 });

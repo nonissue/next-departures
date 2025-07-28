@@ -14,3 +14,7 @@ const PORT = Number(process.env.PORT) || 3000;
 serve({ fetch: app.fetch, port: PORT }, () => {
     console.log(`🚆 Server is running at http://localhost:${PORT}`);
 });
+
+app.notFound((c) => {
+    return c.text('Route not found', 404);
+});
