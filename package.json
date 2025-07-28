@@ -11,8 +11,10 @@
         "test:coverage": "vitest run --coverage"
     },
     "dependencies": {
+        "@hono/node-server": "^1.17.1",
         "express": "^5.1.0",
         "gtfs": "^4.15.15",
+        "hono": "^4.8.9",
         "react": "^19.1.0",
         "react-dom": "^19.1.0"
     },

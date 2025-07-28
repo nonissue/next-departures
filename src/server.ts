@@ -1,17 +1,16 @@
-import express from 'express';
-import router from '@/api/depatures';
+import { Hono } from 'hono';
+import { serve } from '@hono/node-server';
+import { departures } from '@/api/departures';
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const app = new Hono();
 
-// Mount your API route
-app.use(router);
+// mount the /api/departures router under /api
+app.route('/api', departures);
 
-// Optional: health check
-app.get('/', (_, res) => {
-    res.send('API is running.');
-});
+// simple health check
+app.get('/', (c) => c.text('API is running.'));
 
-app.listen(PORT, () => {
+const PORT = Number(process.env.PORT) || 3000;
+serve({ fetch: app.fetch, port: PORT }, () => {
     console.log(`🚆 Server is running at http://localhost:${PORT}`);
 });
