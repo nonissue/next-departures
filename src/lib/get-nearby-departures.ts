@@ -10,13 +10,26 @@ import {
 import { getConfig } from '@/lib/file-utils';
 
 export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
+    // if (!lat || !lon) {
+    //     throw new Error('lat & lon are required to find nearby departures');
+    // }
+
     const currentTime = new Date();
     const config: Config = await getConfig();
     const db = await loadDb(config);
 
     console.log(`DEV MODE  | ${currentTime}`);
 
-    const closestStation = await getClosestStation({ lat, lon });
+    // const closestStation = await getClosestStation({ lat, lon });
+
+    let closestStation;
+    if (!lat || !lon) {
+        console.log('WARNING: GPS OORDS HARDCODED FOR DEV');
+        closestStation = await getClosestStation(TEST_COORDS);
+    } else {
+        console.log('NOTE: using provided LAT/LON');
+        closestStation = await getClosestStation({ lat, lon });
+    }
 
     const [platformA, platformB] = await getStopsForParentStation(
         closestStation.stop_id
