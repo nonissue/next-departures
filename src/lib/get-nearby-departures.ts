@@ -16,15 +16,7 @@ export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
 
     console.log(`DEV MODE  | ${currentTime}`);
 
-    let closestStation;
-
-    if (!lat || !lon) {
-        console.log('WARNING: GPS OORDS HARDCODED FOR DEV');
-        closestStation = await getClosestStation(TEST_COORDS);
-    } else {
-        console.log('NOTE: using provided LAT/LON');
-        closestStation = await getClosestStation({ lat, lon });
-    }
+    const closestStation = await getClosestStation({ lat, lon });
 
     const [platformA, platformB] = await getStopsForParentStation(
         closestStation.stop_id
