@@ -1,13 +1,10 @@
-import { closeDb } from 'gtfs';
-import { loadDb } from '@/lib/db-utils';
-import { Config, GeoCoordinate } from '@/types/global';
+import { GeoCoordinate } from '@/types/global';
 import { TEST_COORDS } from '@/lib/constants';
 import {
     getClosestStation,
     getStopsForParentStation,
     getDeparturesForStop,
 } from '@/lib/stop-utils';
-import { getConfig } from '@/lib/file-utils';
 
 export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
     if (!lat || !lon) {
@@ -15,12 +12,8 @@ export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
     }
 
     const currentTime = new Date();
-    // const config: Config = await getConfig();
-    // const db = await loadDb(config);
 
     console.log(`DEV MODE  | ${currentTime}`);
-
-    // const closestStation = await getClosestStation({ lat, lon });
 
     let closestStation;
     if (!lat || !lon) {
@@ -29,26 +22,16 @@ export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
     } else {
         console.log('NOTE: using provided LAT/LON');
         closestStation = await getClosestStation({ lat, lon });
-        // closestStation = await getClosestStation();
     }
-
-    // console.log('CLOSESTSTATION: ' + closestStation.stop_id);
 
     const [platformA, platformB] = await getStopsForParentStation(
         closestStation.stop_id
     );
 
-    // console.log('Platform A: ' + platformA);
-    // console.log('Platform B: ' + platformB);
-
-    // console.log('PLatformA ' + (await platformA));
-
     const [departuresA, departuresB] = await Promise.all([
         getDeparturesForStop(platformA.stop_id),
         getDeparturesForStop(platformB.stop_id),
     ]);
-
-    // closeDb(db);
 
     const result = {
         closestStation: closestStation,

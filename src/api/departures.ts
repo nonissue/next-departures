@@ -43,7 +43,6 @@ departures.get('/:stopId', async (c) => {
     const db = await loadDb(config);
 
     const stopId = c.req.param('stopId');
-    console.log(stopId);
 
     const result = await getDeparturesForStop(String(stopId));
 
