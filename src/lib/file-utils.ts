@@ -35,8 +35,9 @@ export const getConfig = async () => {
             import.meta.dirname,
             '..',
             '..',
-            'config.json'
+            'app-config.json'
         );
+        console.log('Loaded config: ' + configPath);
         return JSON.parse(await readFile(configPath, 'utf-8'));
     } catch (error: any) {
         throw new Error(error);
