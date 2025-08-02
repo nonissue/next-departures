@@ -60,7 +60,7 @@ export type GetDeparturesForStopOptions = {
     calendarDate?: string | number | Date;
     lookaheadMins?: number; // default: DEFAULT_LOOK_AHEAD_IN_MINS
     limit?: number; // default: DEFAULT_STOP_COUNT_LIMIT
-    tz?: string; // default: 'America/Edmonton'
+    tz?: string; // default: DEFAULT_TIMEZONE
     serviceDayStartHour?: number; // default: 3
     debug?: boolean;
 };

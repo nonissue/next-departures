@@ -1,4 +1,4 @@
-import { SERVICE_DAY_START_HOUR } from '@/config';
+import { DEFAULT_TIMEZONE, SERVICE_DAY_START_HOUR } from '@/config';
 import { ClockTime, ServiceTime } from '@/types/global';
 import {
     clampHour,
@@ -17,14 +17,14 @@ type ServiceDateOptions = {
     /** GTFS-style time; may exceed 24h (e.g., "25:10:00"). If omitted, uses now in tz. */
     targetTime?: string; // "HH:mm:ss"
     /** Local agency TZ (IANA). */
-    tz?: string; // default: "America/Edmonton"
+    tz?: string; // default: DEFAULT_TIMEZONE
     /** Hour of cutover when a new service day starts (0–23). */
     serviceDayStartHour?: number; // default: SERVICE_DAY_START_HOUR config
 };
 
 /** Public API */
 export function getServiceDate(opts: ServiceDateOptions = {}): number {
-    const tz = opts.tz ?? 'America/Edmonton';
+    const tz = opts.tz ?? DEFAULT_TIMEZONE;
     const cut = clampHour(opts.serviceDayStartHour ?? SERVICE_DAY_START_HOUR);
 
     // 1) Resolve base Y/M/D in TZ
@@ -49,7 +49,7 @@ type GetGtfsServiceTimeOptions = {
     /** Minutes to add (or subtract) from service time */
     offsetMins?: number; // default 0
     /** Agency timezone (IANA) used when baseTime is used or when defaulting to now */
-    tz?: string; // default "America/Edmonton"
+    tz?: string; // default DEFAULT_TIMEZONE
     /** Hour when the service day starts (0–23). Typical: 5 */
     serviceDayStartHour?: number; // default
 };
@@ -61,7 +61,7 @@ type GetGtfsServiceTimeOptions = {
 export function getGtfsServiceTime(
     opts: GetGtfsServiceTimeOptions = {}
 ): ServiceTime {
-    const tz = opts.tz ?? 'America/Edmonton';
+    const tz = opts.tz ?? DEFAULT_TIMEZONE;
     const cut = clampHour(opts.serviceDayStartHour ?? SERVICE_DAY_START_HOUR);
     const offset = opts.offsetMins ?? 0;
 
