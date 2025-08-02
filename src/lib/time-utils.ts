@@ -63,13 +63,13 @@ type ServiceDateOptions = {
     /** Local agency TZ (IANA). */
     tz?: string; // default: "America/Edmonton"
     /** Hour of cutover when a new service day starts (0–23). */
-    serviceDayStartHour?: number; // default: 3
+    serviceDayStartHour?: number; // default: SERVICE_DAY_START_HOUR config var
 };
 
 /** Public API */
 export function getServiceDate(opts: ServiceDateOptions = {}): number {
     const tz = opts.tz ?? 'America/Edmonton';
-    const cut = clampHour(opts.serviceDayStartHour ?? SERVICE_DAY_END_HOUR);
+    const cut = clampHour(opts.serviceDayStartHour ?? SERVICE_DAY_START_HOUR);
 
     // 1) Resolve base Y/M/D in TZ
     const baseYmd = resolveYmd(opts.calendarDate, tz);
@@ -270,8 +270,8 @@ type GetGtfsServiceTimeOptions = {
     offsetMins?: number; // default 0
     /** Agency timezone (IANA) used when baseTime is used or when defaulting to now */
     tz?: string; // default "America/Edmonton"
-    /** Hour when the service day starts (0–23). Typical: 3 */
-    serviceDayStartHour?: number; // default 3
+    /** Hour when the service day starts (0–23). Typical: 5 */
+    serviceDayStartHour?: number; // default SERVICE_DAY_START_HOUR config var
 };
 
 /**
@@ -282,7 +282,7 @@ export function getGtfsServiceTime(
     opts: GetGtfsServiceTimeOptions = {}
 ): ServiceTime {
     const tz = opts.tz ?? 'America/Edmonton';
-    const cut = clampHour(opts.serviceDayStartHour ?? 3);
+    const cut = clampHour(opts.serviceDayStartHour ?? SERVICE_DAY_START_HOUR);
     const offset = opts.offsetMins ?? 0;
 
     // 1) Determine local wall clock time-of-day (hh:mm:ss)
@@ -329,5 +329,3 @@ export function padTimeStamp(time: string): ClockTime {
     const [h, m, s] = parts.map((d) => String(Number(d)).padStart(2, '0'));
     return `${h}:${m}:${s}` as ClockTime;
 }
-
-/* ---------------- helpers ---------------- */
