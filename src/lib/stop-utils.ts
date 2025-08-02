@@ -75,6 +75,9 @@ export const getStopsForParentStation = (parent_station_id: string): Stop[] => {
 export const getDeparturesForStop = async (
     stopId: string,
     targetTime?: ClockTime,
+    // It might be super dangerous to mix optional and default params like this
+    // I think it was causing a bug for me, where :stopId was being passed as a number
+    // not a string, and so it was fucking with the tripLookaheadIntervalMins...
     tripLookaheadIntervalMins: number = DEFAULT_LOOK_AHEAD_IN_MINS,
     stopCount: number = DEFAULT_STOP_COUNT_LIMIT
 ): Promise<StopDepartures[]> => {
@@ -83,6 +86,18 @@ export const getDeparturesForStop = async (
     const [currentServiceDate, currentServiceTime] = targetTime
         ? [getServiceDate({ targetTime }), getGtfsServiceTime(targetTime)]
         : [getServiceDate(), getGtfsServiceTime()];
+
+    console.log(
+        'Params:\nstopId: ' +
+            stopId +
+            '\t\ttargetTime: ' +
+            targetTime +
+            '\t\ttripLookaheadIntervalMins: ' +
+            tripLookaheadIntervalMins +
+            '\t\tstopCount: ' +
+            stopCount +
+            '\n'
+    );
 
     const DEBUG_MODE = false;
     if (DEBUG_MODE) {
@@ -114,6 +129,8 @@ export const getDeparturesForStop = async (
         ],
         [['departure_time', 'ASC']]
     ) as StopDepartures[];
+
+    console.log('Departures returned: ' + departures.length);
 
     return departures.slice(0, stopCount);
 };
