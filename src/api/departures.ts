@@ -47,10 +47,11 @@ departures.get('/:stopId', async (c) => {
     const result = await getDeparturesForStop({
         stopId: stopId,
         clockTime: '08:00:00',
-        lookaheadMins: 60,
-        limit: 25,
+        lookaheadMins: 200,
+        limit: 100,
     });
 
     closeDb(db);
+
     return c.json(result);
 });
