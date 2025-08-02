@@ -1,5 +1,4 @@
-import { SERVICE_DAY_END_HOUR } from '@/config';
-import { HOURS_IN_A_DAY, LAST_CLOCK_HOUR } from '@/lib/constants';
+import { SERVICE_DAY_START_HOUR } from '@/config';
 import { ClockTime, ServiceTime } from '@/types/global';
 
 // interface ServiceDateOptions {

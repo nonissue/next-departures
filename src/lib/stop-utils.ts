@@ -4,9 +4,10 @@ import { ClockTime, GeoCoordinate, StopDepartures } from '@/types/global';
 import { STATION_SEARCH_BOUNDING_BOX_AREA } from '@/config';
 import { getServiceDate, getGtfsServiceTime } from '@/lib/time-utils';
 import {
-    DEFAULT_LOOK_AHEAD_IN_MINS,
-    DEFAULT_STOP_COUNT_LIMIT,
-} from '@/lib/constants';
+    SERVICE_DAY_START_HOUR,
+    STATION_SEARCH_BOUNDING_BOX_AREA,
+} from '@/config';
+import { DEFAULT_LOOK_AHEAD_IN_MINS, DEFAULT_STOP_COUNT_LIMIT } from '@/config';
 
 /**
  * 25-07-27 -> IS THIS EVEN USED?
