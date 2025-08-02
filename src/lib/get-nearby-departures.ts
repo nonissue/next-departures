@@ -10,9 +10,9 @@ import {
 import { getConfig } from '@/lib/file-utils';
 
 export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
-    // if (!lat || !lon) {
-    //     throw new Error('lat & lon are required to find nearby departures');
-    // }
+    if (!lat || !lon) {
+        throw new Error('lat & lon are required to find nearby departures');
+    }
 
     const currentTime = new Date();
     const config: Config = await getConfig();
@@ -29,11 +29,19 @@ export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
     } else {
         console.log('NOTE: using provided LAT/LON');
         closestStation = await getClosestStation({ lat, lon });
+        // closestStation = await getClosestStation();
     }
+
+    // console.log('CLOSESTSTATION: ' + closestStation.stop_id);
 
     const [platformA, platformB] = await getStopsForParentStation(
         closestStation.stop_id
     );
+
+    // console.log('Platform A: ' + platformA);
+    // console.log('Platform B: ' + platformB);
+
+    // console.log('PLatformA ' + (await platformA));
 
     const [departuresA, departuresB] = await Promise.all([
         getDeparturesForStop(platformA.stop_id),

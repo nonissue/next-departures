@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './style.css';
 import { convertServiceTimeToClockTime } from '@/lib/time-utils';
-import { TEST_COORDS } from '@/lib/constants';
+import { TEST_COORDS, TEST_COORDS_SG } from '@/lib/constants';
 
 interface Departure {
     stop_id: string;
@@ -50,6 +50,7 @@ const App = () => {
                 const { latitude, longitude } = position.coords;
 
                 fetchDepartures(latitude, longitude);
+                // fetchDepartures(TEST_COORDS.lat, TEST_COORDS.lon);
             },
             () => {
                 setStatus('Unable to retrieve your location.');
