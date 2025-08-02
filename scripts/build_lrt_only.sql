@@ -1,9 +1,11 @@
 -- ========= settings for sqlite3 CLI output (safe to leave in) =========
 .headers on
 .mode column
-.echo on
+.echo off
+.bail on
+.timer on
 
-.print === Creating LRT-only copy without modifying source ===
+.print \n=== Creating LRT-only copy without modifying source ===
 -- Ensure output directory exists before running (e.g., `mkdir -p db`)
 
 -- 0) Attach a fresh target db and clear any old copies
@@ -14,6 +16,7 @@ DROP TABLE IF EXISTS slim.routes;
 DROP TABLE IF EXISTS slim.trips;
 DROP TABLE IF EXISTS slim.stop_times;
 DROP TABLE IF EXISTS slim.stops;
+DROP TABLE IF EXISTS slim.calendar;   
 DROP TABLE IF EXISTS slim.calendar_dates;
 DROP TABLE IF EXISTS slim.agency;
 DROP TABLE IF EXISTS slim.feed_info;
@@ -100,32 +103,46 @@ CREATE INDEX IF NOT EXISTS slim.idx_stop_times_trip  ON stop_times(trip_id);
 CREATE INDEX IF NOT EXISTS slim.idx_trips_route      ON trips(route_id);
 CREATE INDEX IF NOT EXISTS slim.idx_trips_service    ON trips(service_id);
 
--- 4) Progress & counts
-.print --- Source vs Slim counts (rows) ---
-SELECT 'routes'       AS table, (SELECT COUNT(*) FROM main.routes)      AS source,
-                                      (SELECT COUNT(*) FROM slim.routes) AS slim
-UNION ALL
-SELECT 'trips',       (SELECT COUNT(*) FROM main.trips),
-                      (SELECT COUNT(*) FROM slim.trips)
-UNION ALL
-SELECT 'stop_times',  (SELECT COUNT(*) FROM main.stop_times),
-                      (SELECT COUNT(*) FROM slim.stop_times)
-UNION ALL
-SELECT 'stops',       (SELECT COUNT(*) FROM main.stops),
-                      (SELECT COUNT(*) FROM slim.stops)
-UNION ALL
-SELECT 'calendar_dates', COALESCE((SELECT COUNT(*) FROM main.calendar_dates), 0),
-                         COALESCE((SELECT COUNT(*) FROM slim.calendar_dates), 0);
 
-.print --- Orphan check in slim (should be 0) ---
+-- 4) Progress & counts
+.print \n--- Source vs Slim counts (rows) ---
+SELECT 'routes' AS entity,
+       (SELECT COUNT(*) FROM main.routes) AS source_rows,
+       (SELECT COUNT(*) FROM slim.routes) AS slim_rows
+UNION ALL
+SELECT 'trips',
+       (SELECT COUNT(*) FROM main.trips),
+       (SELECT COUNT(*) FROM slim.trips)
+UNION ALL
+SELECT 'stop_times',
+       (SELECT COUNT(*) FROM main.stop_times),
+       (SELECT COUNT(*) FROM slim.stop_times)
+UNION ALL
+SELECT 'stops',
+       (SELECT COUNT(*) FROM main.stops),
+       (SELECT COUNT(*) FROM slim.stops)
+UNION ALL
+SELECT 'calendar_dates',
+       COALESCE((SELECT COUNT(*) FROM main.calendar_dates),0),
+       COALESCE((SELECT COUNT(*) FROM slim.calendar_dates),0);
+
+
+.print \n--- Calendar table presence ---
+SELECT 'main.calendar exists' AS metric,
+       (SELECT COUNT(*) FROM main.sqlite_master WHERE type='table' AND name='calendar') AS value
+UNION ALL
+SELECT 'slim.calendar rows',
+       (SELECT COUNT(*) FROM slim.calendar);
+
+.print \n--- Orphan check in slim (should be 0) ---
 SELECT COUNT(*) AS slim_orphan_stop_times
 FROM slim.stop_times st
 LEFT JOIN slim.stops s ON s.stop_id = st.stop_id
 WHERE s.stop_id IS NULL;
 
 -- 5) Compact the slim db only (does not touch source)
-.print --- Vacuuming slim db ---
+.print \n--- Vacuuming slim db ---
 VACUUM slim;
 ANALYZE slim;
 
-.print === Done. New file at db/gtfs_lrt_only.db ===
+.print \n=== Done. New file at db/gtfs_lrt_only.db ===\n
