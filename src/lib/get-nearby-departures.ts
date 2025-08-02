@@ -1,5 +1,5 @@
 import { GeoCoordinate } from '@/types/global';
-import { TEST_COORDS } from '@/lib/constants';
+import { TEST_COORDS } from '@/config';
 import {
     getClosestStation,
     getStopsForParentStation,
@@ -29,8 +29,8 @@ export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
     );
 
     const [departuresA, departuresB] = await Promise.all([
-        getDeparturesForStop(platformA.stop_id),
-        getDeparturesForStop(platformB.stop_id),
+        getDeparturesForStop({ stopId: platformA.stop_id }),
+        getDeparturesForStop({ stopId: platformB.stop_id }),
     ]);
 
     const result = {
