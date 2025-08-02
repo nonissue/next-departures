@@ -15,8 +15,8 @@ export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
     }
 
     const currentTime = new Date();
-    const config: Config = await getConfig();
-    const db = await loadDb(config);
+    // const config: Config = await getConfig();
+    // const db = await loadDb(config);
 
     console.log(`DEV MODE  | ${currentTime}`);
 
@@ -48,7 +48,7 @@ export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
         getDeparturesForStop(platformB.stop_id),
     ]);
 
-    closeDb(db);
+    // closeDb(db);
 
     const result = {
         closestStation: closestStation,
