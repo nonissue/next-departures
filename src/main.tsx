@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import './style.css';
 import { convertServiceTimeToClockTime } from '@/lib/time-utils';
-import { TEST_COORDS, TEST_COORDS_SG } from '@/lib/constants';
+import { TEST_COORDS, TEST_COORDS_SG } from '@/config';
 
 interface Departure {
     stop_id: string;
