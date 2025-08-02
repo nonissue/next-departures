@@ -1,6 +1,5 @@
 import { Database } from 'better-sqlite3';
 import { getStops, getStoptimes, Stop } from 'gtfs';
-
 import {
     getServiceDate,
     getGtfsServiceTime,
@@ -8,6 +7,7 @@ import {
 } from '@/lib/time-utils';
 import { ClockTime, GeoCoordinate } from '@/types/global';
 import {
+    DEFAULT_TIMEZONE,
     SERVICE_DAY_START_HOUR,
     STATION_SEARCH_BOUNDING_BOX_AREA,
 } from '@/config';
@@ -176,7 +176,7 @@ export async function getDeparturesForStop({
     calendarDate,
     lookaheadMins = DEFAULT_LOOK_AHEAD_IN_MINS,
     limit = DEFAULT_STOP_COUNT_LIMIT,
-    tz = 'America/Edmonton',
+    tz = DEFAULT_TIMEZONE,
     serviceDayStartHour = SERVICE_DAY_START_HOUR,
     debug = false,
 }: GetDeparturesForStopOptions): Promise<StopDepartures[]> {
