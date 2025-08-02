@@ -2,9 +2,9 @@ import { it, describe, beforeEach, afterEach, expect, vi } from 'vitest';
 import {
     getServiceDate,
     getGtfsServiceTime,
-    padTimeStamp,
     convertServiceTimeToClockTime,
 } from '@/lib/time-utils';
+import { padTimeStamp } from './time-helpers';
 
 const setClock = (y: number, m: number, d: number, h: number, min: number) =>
     vi.setSystemTime(new Date(y, m, d, h, min, 0));
