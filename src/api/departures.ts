@@ -44,7 +44,12 @@ departures.get('/:stopId', async (c) => {
 
     const stopId = c.req.param('stopId');
 
-    const result = await getDeparturesForStop(stopId, '08:00:00', 60);
+    const result = await getDeparturesForStop({
+        stopId: stopId,
+        clockTime: '08:00:00',
+        lookaheadMins: 60,
+        limit: 25,
+    });
 
     closeDb(db);
     return c.json(result);
