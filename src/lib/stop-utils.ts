@@ -84,7 +84,10 @@ export const getDeparturesForStop = async (
     if (!stopId) throw new Error('stopId is required');
 
     const [currentServiceDate, currentServiceTime] = targetTime
-        ? [getServiceDate({ targetTime }), getGtfsServiceTime(targetTime)]
+        ? [
+              getServiceDate({ targetTime }),
+              getGtfsServiceTime({ clockTime: targetTime }),
+          ]
         : [getServiceDate(), getGtfsServiceTime()];
 
     console.log(
@@ -107,7 +110,7 @@ export const getDeparturesForStop = async (
         );
         console.log(
             'currentServiceTime with offset from getDeparturesForStop: ' +
-                getGtfsServiceTime(undefined, tripLookaheadIntervalMins)
+                getGtfsServiceTime({ offsetMins: tripLookaheadIntervalMins })
         );
     }
 
@@ -118,7 +121,9 @@ export const getDeparturesForStop = async (
             start_time: currentServiceTime,
             // start_time: '23:45:00',
             // ..(endTime ? { end_time: endTime } : {})  // include end_time if defined
-            end_time: getGtfsServiceTime(undefined, tripLookaheadIntervalMins),
+            end_time: getGtfsServiceTime({
+                offsetMins: tripLookaheadIntervalMins,
+            }),
         },
         [
             'stop_id',
