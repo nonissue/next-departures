@@ -7,11 +7,18 @@ Have borrowed some code from there as well!
 
 ```bash
 # Updates gtfs database or performs import of relevant data
-gtfs-import --configPath config.json
-# Starts our express api server
+# gtfs-import --configPath config.json
+
+# imports gtfs data into sqlite db './db/gtfs.db'
+npx gtfs-import --configPath import-config.json
+
+# creates a slim version of our `./db/gtfs.db` at `./db/gtfs_lrt_only.db`
+# *should* leave original alone...
+sqlite3 -batch db/gtfs.db < scripts/build_lrt_only.sql
+
+# Starts our express api server & vite ui at the same time
 npm run dev
-# Starts our vite web UI
-npx vite
+
 ```
 
 ## Setup notes
