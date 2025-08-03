@@ -30,14 +30,13 @@ export function validateConfigForImport(config: Config) {
 
 export const getConfig = async () => {
     try {
-        // const configPath = '/Users/apw/code/node-gtfs-pg/config.json';
         const configPath = path.join(
             import.meta.dirname,
             '..',
             '..',
             'app-config.json'
         );
-        console.log('Loaded config: ' + configPath);
+
         return JSON.parse(await readFile(configPath, 'utf-8'));
     } catch (error: any) {
         throw new Error(error);

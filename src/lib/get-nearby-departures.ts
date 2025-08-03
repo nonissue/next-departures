@@ -11,16 +11,10 @@ export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
         throw new Error('lat & lon are required to find nearby departures');
     }
 
-    const currentTime = new Date();
-
-    console.log(`DEV MODE  | ${currentTime}`);
-
     let closestStation;
     if (!lat || !lon) {
-        console.log('WARNING: GPS OORDS HARDCODED FOR DEV');
         closestStation = await getClosestStation(TEST_COORDS);
     } else {
-        console.log('NOTE: using provided LAT/LON');
         closestStation = await getClosestStation({ lat, lon });
     }
 
