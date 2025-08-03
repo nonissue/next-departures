@@ -1,5 +1,4 @@
-import { it, describe, beforeEach, afterEach, expect, vi } from 'vitest';
-import { validateConfigForImport } from '@/lib/file-utils';
+import { it, describe, beforeEach, afterEach, expect } from 'vitest';
 
 describe('file-utils', () => {
     beforeEach(() => {});

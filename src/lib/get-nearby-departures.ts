@@ -1,10 +1,10 @@
-import { GeoCoordinate } from '@/types/global';
-import { TEST_COORDS } from '@/config';
+import { GeoCoordinate } from '../types/global.js';
+import { TEST_COORDS } from '../config.js';
 import {
     getClosestStation,
     getStopsForParentStation,
     getDeparturesForStop,
-} from '@/lib/stop-utils';
+} from '../lib/stop-utils.js';
 
 export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
     if (!lat || !lon) {

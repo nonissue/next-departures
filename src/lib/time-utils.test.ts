@@ -3,8 +3,8 @@ import {
     getServiceDate,
     getGtfsServiceTime,
     convertServiceTimeToClockTime,
-} from '@/lib/time-utils';
-import { padTimeStamp } from './time-helpers';
+} from '../lib/time-utils.js';
+import { padTimeStamp } from './time-helpers.js';
 
 const setClock = (y: number, m: number, d: number, h: number, min: number) =>
     vi.setSystemTime(new Date(y, m, d, h, min, 0));

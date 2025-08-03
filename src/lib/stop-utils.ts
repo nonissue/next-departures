@@ -1,17 +1,17 @@
-import { Database } from 'better-sqlite3';
 import { getStops, getStoptimes, Stop } from 'gtfs';
 import {
     getServiceDate,
     getGtfsServiceTime,
     convertServiceTimeToClockTime,
-} from '@/lib/time-utils';
-import { ClockTime, GeoCoordinate } from '@/types/global';
+} from '../lib/time-utils.js';
+import { ClockTime, GeoCoordinate } from '../types/global.js';
 import {
     DEFAULT_TIMEZONE,
     SERVICE_DAY_START_HOUR,
     STATION_SEARCH_BOUNDING_BOX_AREA,
-} from '@/config';
-import { DEFAULT_LOOK_AHEAD_IN_MINS, DEFAULT_STOP_COUNT_LIMIT } from '@/config';
+    DEFAULT_LOOK_AHEAD_IN_MINS,
+    DEFAULT_STOP_COUNT_LIMIT,
+} from '../config.js';
 
 /**
  * Retrieves closest "station" from GTFS stops.

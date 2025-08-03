@@ -1,4 +1,4 @@
-import { ClockTime } from '@/types/global';
+import { ClockTime } from '../types/global.js';
 
 export type Ymd = { y: number; m: number; d: number };
 

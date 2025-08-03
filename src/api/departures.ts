@@ -1,10 +1,10 @@
 import { Hono } from 'hono';
-import { getNearbyDepartures } from '@/lib/get-nearby-departures';
-import { getDeparturesForStop } from '@/lib/stop-utils';
-import { getConfig } from '@/lib/file-utils';
-import { loadDb } from '@/lib/db-utils';
-import { Config } from '@/types/global';
 import { closeDb } from 'gtfs';
+import { getNearbyDepartures } from '../lib/get-nearby-departures.js';
+import { getDeparturesForStop } from '../lib/stop-utils.js';
+import { getConfig } from '../lib/file-utils.js';
+import { loadDb } from '../lib/db-utils.js';
+import { Config } from '../types/global.js';
 
 export const departures = new Hono().basePath('/departures');
 

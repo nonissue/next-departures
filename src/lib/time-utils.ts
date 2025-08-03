@@ -1,5 +1,5 @@
-import { DEFAULT_TIMEZONE, SERVICE_DAY_START_HOUR } from '@/config';
-import { ClockTime, ServiceTime } from '@/types/global';
+import { DEFAULT_TIMEZONE, SERVICE_DAY_START_HOUR } from '../config.js';
+import { ClockTime, ServiceTime } from '../types/global.js';
 import {
     clampHour,
     resolveYmd,
@@ -9,7 +9,7 @@ import {
     timePartsInTz,
     pad2,
     ymdToNumber,
-} from './time-helpers';
+} from './time-helpers.js';
 
 type ServiceDateOptions = {
     /** Base calendar date; if omitted, uses "today" in tz. */
@@ -49,7 +49,7 @@ type GetGtfsServiceTimeOptions = {
     /** Minutes to add (or subtract) from service time */
     offsetMins?: number; // default 0
     /** Agency timezone (IANA) used when baseTime is used or when defaulting to now */
-    tz?: string; // default DEFAULT_TIMEZONE
+    tz?: string; // default "America/Edmonton"
     /** Hour when the service day starts (0–23). Typical: 5 */
     serviceDayStartHour?: number; // default
 };
