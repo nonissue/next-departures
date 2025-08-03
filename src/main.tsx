@@ -32,6 +32,7 @@ const App = () => {
             const res = await fetch(
                 `/api/departures/nearby?lat=${latitude}&lon=${longitude}`
             );
+
             const data = await res.json();
 
             setStationName(data.closestStation.stop_name);
@@ -73,7 +74,7 @@ const App = () => {
     }, []);
 
     return (
-        <main className="min-h-dvh overflow-y-auto overscroll-none  w-full flex flex-col items-center justify-center px-4 bg-gradient-to-l from-black via-black to-black text-white font-mono sm:py-10  sm:min-h-screen sm:overflow-visible sm:overscroll-auto">
+        <main className="min-h-dvh overflow-y-auto overscroll-none w-full flex flex-col items-center justify-center px-4 bg-gradient-to-l from-black via-black to-black text-white font-mono sm:py-10  sm:min-h-screen sm:overflow-visible sm:overscroll-auto">
             <div className=" w-full px-4 max-w-xl  sm:my-auto ">
                 {/* <h1 className="text-4xl text-center font-bold tracking-widest text-orange-400 mb-6">
                     Departures Board
@@ -85,25 +86,25 @@ const App = () => {
                     </div>
                 )} */}
 
-                <div className="px-2 py-4 sm:px-8">
+                <div
+                    className={`px-2 py-4 sm:px-8 ${loading && 'animate-pulse'}`}
+                >
                     {/* bg-radial-[at_25%_100%] from-amber-700/10 via-orange-500/10 to-zinc-700/20 to-200% */}
                     {/* <div className="border-2 border-b-0 border-dotted border-neutral-500/25 bg-radial-[at_50%_150%] from-neutral-900/50 to-neutral-400/10 rounded-t-sm  p-4 "> */}
-                    <div className="p-0 animate-in">
+                    <div className="p-0">
                         <div className="flex flex-col sm:gap-y-2 items-center justify-around">
                             <span className="relative text-sm inline-flex text-orange-300 bg-gradient-to-r from-gray-700/0 via-slate-700/0 to-gray-800/0  uppercase tracking-widest">
-                                {stationName && 'Closest Station: '}
+                                {stationName ? 'Closest Station: ' : 'Loading'}
                             </span>
 
-                            <div className="text-2xl sm:text-2xl font-sans font-bold tracking-normal text-orange-200 drop-shadow-lg">
-                                {stationName
-                                    ? stationName.toUpperCase()
-                                    : 'Loading'}
+                            <div className="text-2xl sm:text-2xl font-sans font-bold tracking-normal text-orange-200 drop-shadow-lg uppercase">
+                                {stationName ? stationName : 'Loading'}
                             </div>
                         </div>
                     </div>
                 </div>
                 {loading ? (
-                    <div className="animate-pulse duration-500">
+                    <div className="animate-pulse">
                         <div className="space-y-0 border-2 border-orange-400/50 divide-orange-400/50 divide-y-2 bg-orange-100/10 ">
                             {[...Array(2)].map((_, i) => (
                                 <div
@@ -140,9 +141,7 @@ const App = () => {
                         <div className="px-0 sm:px-0 ">
                             <div className="flex justify-between items-center  text-orange-100/90 rounded-b-xs border-2 border-neutral-700 border-t-0 bg-neutral-900">
                                 <span className="text-xs sm:text-sm w-full text-center sm:text-left sm:px-4 uppercase font-semibold">
-                                    <span className="font-normal text-orange-100/70">
-                                        Updated at{' '}
-                                    </span>
+                                    <div className="font-normal text-orange-100/70 h-5 bg-neutral-600/50"></div>
                                 </span>
                                 <button
                                     onClick={getUserLocationAndFetch}
@@ -170,7 +169,7 @@ const App = () => {
                         </div>
                     </div>
                 ) : (
-                    <div className="animate-in fade-in-0 duration-[1s]">
+                    <div className="animate-in fade-in-5 duration-[0.1s]">
                         <div className="space-y-0 border-2 border-orange-400/50 divide-orange-400/50 divide-y-2 bg-orange-100/10  ">
                             {departures.map((group, idx) =>
                                 group.length == 0 ? (
