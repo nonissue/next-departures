@@ -1,17 +1,18 @@
 {
     "compilerOptions": {
+        "outDir": "dist",
         "target": "ESNext",
         "module": "ESNext",
-        "jsx": "react-jsx", // ✅ This is the fix
+        "jsx": "react-jsx",
         "moduleResolution": "bundler",
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "types": ["vite/client"],
-        "baseUrl": ".", // allows absolute paths
+        "baseUrl": ".",
         "paths": {
-            "@/*": ["src/*"] // maps "@/lib/utils" to "src/lib/utils"
+            "@/*": ["src/*"]
         }
     },
     "include": ["src"]

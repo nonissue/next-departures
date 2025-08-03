@@ -7,6 +7,10 @@
         "dev:server": "tsx watch src/server.ts",
         "dev:client": "vite --host",
         "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"",
+        "build": "vite build",
+        "build:server": "tsc",
+        "build:all": "npm run build && npm run build:server",
+        "serve": "node dist/server.js",
         "test": "vitest",
         "test:coverage": "vitest run --coverage"
     },
