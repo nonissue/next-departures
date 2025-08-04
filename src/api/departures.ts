@@ -6,6 +6,14 @@ import { getConfig } from '../lib/file-utils.js';
 import { loadDb } from '../lib/db-utils.js';
 import { Config } from '../types/global.js';
 
+const Sentry = require('@sentry/node');
+
+try {
+    foo();
+} catch (e) {
+    Sentry.captureException(e);
+}
+
 export const departures = new Hono().basePath('/departures');
 
 /**
