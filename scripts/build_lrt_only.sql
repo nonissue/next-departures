@@ -9,7 +9,7 @@
 -- Ensure output directory exists before running (e.g., `mkdir -p db`)
 
 -- 0) Attach a fresh target db and clear any old copies
-ATTACH 'db/gtfs_lrt_only.db' AS slim;
+ATTACH 'file:src/database/gtfs_lrt_only.db?mode=rwc' AS slim;
 
 -- Drop target tables if they exist (re-runs safe)
 DROP TABLE IF EXISTS slim.routes;
@@ -145,4 +145,4 @@ WHERE s.stop_id IS NULL;
 VACUUM slim;
 ANALYZE slim;
 
-.print \n=== Done. New file at db/gtfs_lrt_only.db ===\n
+.print \n=== Done. New file at src/database/gtfs_lrt_only.db?mode=rwc ===\n
