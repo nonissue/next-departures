@@ -33,6 +33,7 @@
         "tailwind-merge": "^3.3.1"
     },
     "devDependencies": {
+        "@flydotio/dockerfile": "^0.7.10",
         "@tailwindcss/postcss": "^4.1.11",
         "@types/better-sqlite3": "^7.6.13",
         "@types/express": "^5.0.3",
