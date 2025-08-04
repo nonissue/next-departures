@@ -8,6 +8,7 @@ import {
     TEST_COORDS,
     TEST_COORDS_SG,
 } from './config.js';
+import { ComboboxDemo } from './components/combobox';
 
 interface Departure {
     stop_id: string;
@@ -99,6 +100,7 @@ const App = () => {
 
                             <div className="text-2xl sm:text-2xl font-sans font-bold tracking-normal text-orange-200 drop-shadow-lg uppercase">
                                 {stationName ? stationName : 'Loading'}
+                                {/* <ComboboxDemo /> */}
                             </div>
                         </div>
                     </div>
