@@ -11,6 +11,8 @@ import {
     STATION_SEARCH_BOUNDING_BOX_AREA,
     DEFAULT_LOOK_AHEAD_IN_MINS,
     DEFAULT_STOP_COUNT_LIMIT,
+    TEST_COORDS,
+    TEST_COORDS_SUPER_FAR,
 } from '../config.js';
 
 /**
@@ -19,18 +21,24 @@ import {
  *
  * @returns Promise<Stop[]> - an array of stop objects representing transit stations.
  */
-export const getClosestStation = ({ lat, lon }: GeoCoordinate = {}): Stop => {
-    const nearbyStations = getStops(
+export const getClosestStation = async ({
+    lat,
+    lon,
+}: GeoCoordinate = {}): Promise<Stop> => {
+    const nearbyStations = await getStops(
         {
             location_type: 1,
+            // stop_lat: TEST_COORDS_SUPER_FAR.lat,
+            // stop_lon: TEST_COORDS_SUPER_FAR.lon,
             stop_lat: lat,
             stop_lon: lon,
         },
         [],
-        []
+        [],
+        { bounding_box_side_m: 999999999 }
+        // stop_lat: lat,
+        // stop_lon: lon,
     );
-
-    console.log(nearbyStations[0]);
 
     return nearbyStations[0];
 };
