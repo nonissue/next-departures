@@ -29,9 +29,11 @@ export const getClosestStation = ({ lat, lon }: GeoCoordinate = {}): Stop => {
         [],
         [],
         {
-            bounding_box_side_m: STATION_SEARCH_BOUNDING_BOX_AREA,
+            bounding_box_side_m: 150000,
         }
     );
+
+    console.log(nearbyStations[0]);
 
     return nearbyStations[0];
 };
@@ -39,7 +41,6 @@ export const getClosestStation = ({ lat, lon }: GeoCoordinate = {}): Stop => {
 export const getStopsForParentStation = (parent_station_id: string): Stop[] => {
     const platforms = getStops({
         parent_station: parent_station_id,
-        location_type: 0,
     });
 
     return [...platforms];
