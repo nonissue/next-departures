@@ -12,12 +12,19 @@ export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
     }
 
     let closestStation;
+
     if (!lat || !lon) {
+        console.warn(
+            'get-nearby-departures: using TEST_COORDS (for some reason)'
+        );
+
         closestStation = await getClosestStation(TEST_COORDS);
     } else {
+        console.warn(
+            `get-nearby-departures: using user (?) location: {lat: ${lat}, lon: ${lon}}`
+        );
+
         closestStation = await getClosestStation({ lat, lon });
-        // closestStation = await getClosestStation(TEST_COORDS_FAR);
-        console.log(closestStation.stop_id);
     }
 
     const stops = await getStopsForParentStation(closestStation.stop_id);
@@ -25,11 +32,6 @@ export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
     const departures = await Promise.all(
         stops.map((stop) => getDeparturesForStop({ stopId: stop.stop_id }))
     );
-
-    // const [departuresA, departuresB] = await Promise.all([
-    //     getDeparturesForStop({ stopId: platformA.stop_id }),
-    //     getDeparturesForStop({ stopId: platformB.stop_id }),
-    // ]);
 
     const [departuresA, departuresB] = [
         departures[0] ?? [],

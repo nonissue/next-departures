@@ -59,12 +59,17 @@ const App = () => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const { latitude, longitude } = position.coords;
-
+                console.warn(
+                    'main.tsx: using users location (position.coords)'
+                );
                 fetchDepartures(latitude, longitude);
                 // fetchDepartures(TEST_COORDS.lat, TEST_COORDS.lon);
             },
             () => {
                 setStatus('Unable to retrieve your location.');
+                console.warn(
+                    'main.tsx: using TEST_COORDS (navigator.geolocation failed?)'
+                );
                 fetchDepartures(TEST_COORDS.lat, TEST_COORDS.lon);
             }
         );
