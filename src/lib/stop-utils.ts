@@ -27,10 +27,7 @@ export const getClosestStation = ({ lat, lon }: GeoCoordinate = {}): Stop => {
             stop_lon: lon,
         },
         [],
-        [],
-        {
-            bounding_box_side_m: 150000,
-        }
+        []
     );
 
     console.log(nearbyStations[0]);
