@@ -4,6 +4,7 @@ export const STATION_SEARCH_BOUNDING_BOX_AREA = 100000;
 export const TEST_COORDS = { lat: 53.542005, lon: -113.506607 };
 export const TEST_COORDS_SG = { lat: 53.485704, lon: -113.51379 };
 export const TEST_COORDS_FAR = { lat: 53.413853, lon: -113.634919 };
+export const TEST_COORDS_SUPER_FAR = { lat: 47.570042, lon: -52.681893 }; // signal hill
 export const DEFAULT_LOOK_AHEAD_IN_MINS = 120;
 export const DEFAULT_STOP_COUNT_LIMIT = 7;
 export const DEFAULT_TIMEZONE = 'America/Edmonton';
