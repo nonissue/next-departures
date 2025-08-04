@@ -15,8 +15,8 @@ export const getNearbyDepartures = async ({ lat, lon }: GeoCoordinate = {}) => {
     if (!lat || !lon) {
         closestStation = await getClosestStation(TEST_COORDS);
     } else {
-        // closestStation = await getClosestStation({ lat, lon });
-        closestStation = await getClosestStation(TEST_COORDS_FAR);
+        closestStation = await getClosestStation({ lat, lon });
+        // closestStation = await getClosestStation(TEST_COORDS_FAR);
         console.log(closestStation.stop_id);
     }
 
