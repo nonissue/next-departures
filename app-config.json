@@ -10,5 +10,5 @@
     "downloadTimeout": 5000,
     "ignoreDuplicates": true,
     "ignoreErrors": false,
-    "sqlitePath": "db/gtfs_lrt_only.db"
+    "sqlitePath": "data/gtfs_lrt_only.db"
 }
