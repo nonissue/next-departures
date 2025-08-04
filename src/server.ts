@@ -3,9 +3,9 @@ import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import * as Sentry from '@sentry/node';
 
 // Import with `import * as Sentry from "@sentry/node"` if you are using ESM
-const Sentry = require('@sentry/node');
 
 Sentry.init({
     dsn: 'https://07484d1f244886b5aba802227c2608d8@o4509785629786112.ingest.us.sentry.io/4509785630048256',
@@ -14,14 +14,6 @@ Sentry.init({
     // For example, automatic IP address collection on events
     sendDefaultPii: true,
 });
-
-const Sentry = require('@sentry/node');
-
-try {
-    foo();
-} catch (e) {
-    Sentry.captureException(e);
-}
 
 import { departures } from './api/departures.js';
 
